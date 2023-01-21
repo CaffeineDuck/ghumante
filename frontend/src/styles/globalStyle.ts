@@ -6,6 +6,9 @@ export const globalStyle = css`
     padding: 0;
     box-sizing: border-box;
   }
+  *:focus-visible {
+    border-color: transparent;
+  }
   html {
     scroll-behavior: smooth;
     font-size: 92%;

@@ -1,6 +1,6 @@
 import InputField from "@/components/global/FormElements/InputField";
 import { getAppVerifier } from "@/utils/firebaseAuth";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import { ConfirmationResult, RecaptchaVerifier } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
@@ -10,6 +10,7 @@ import {
 } from "@/firebase_app/firebase.action";
 import { useRouter } from "next/router";
 import OTPInput from "@/components/global/FormElements/OTPInput";
+import { axiosInstance } from "@/utils/axiosInstance";
 const LoginPage = () => {
   const router = useRouter();
   const method = useForm({ mode: "all" });
@@ -26,20 +27,30 @@ const LoginPage = () => {
   const phone = watch("phone");
   const otp = watch("otp");
 
-  const submitOTP = async () => {
+  const submitOTP = async (code: string) => {
+    console.log(code);
     try {
       const { success, token, error } = await otpVerification(
-        otp,
+        code,
         confirmationResult
       );
-      console.log(token);
+      const response = await axiosInstance.post(
+        "/auth/login",
+        { token },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
     } catch (e) {
     } finally {
     }
   };
   const onSubmit = async (values: FieldValues) => {
     if (currentView === "otp") {
-      return submitOTP();
+      return submitOTP(otp);
     }
     setVerifyingRecaptcha(true);
   };
@@ -57,7 +68,7 @@ const LoginPage = () => {
     } else if (currentView === "phone")
       return (
         <InputField
-          name="input"
+          name="phone"
           margin="1rem 0"
           label="Enter Phone"
           placeholder={"98********"}
@@ -94,22 +105,45 @@ const LoginPage = () => {
   }, [verifyingRecaptcha]);
 
   return (
-    <Box maxW="4xl" mx="auto" my="3rem">
+    <Box maxW="2xl" bg="light" mx="auto" my="3rem" borderRadius="lg" p="3rem">
+      <Text fontSize="2rem" fontWeight="bold" my="2rem" textAlign="center">
+        Login to{" "}
+        <Text as="span" color="primary">
+          Ghumante
+        </Text>
+      </Text>
       <FormProvider {...method}>
         <form onSubmit={handleSubmit(onSubmit)}>
           {renderCorrectInput()}
           {verifyingRecaptcha && <div id="recaptcha-container"></div>}
           <Button
+            mt="2rem"
             w="full"
+            borderRadius="lg"
+            h="4rem"
             bg="primary"
             color="light"
             _hover={{ bg: "primaryHover" }}
             type="submit"
+            isLoading={isSubmitting || verifyingRecaptcha}
           >
             Submit
           </Button>
         </form>
       </FormProvider>
+      {currentView === "otp" && (
+        <Box mt="0.8rem">
+          <Button
+            variant="link"
+            as="span"
+            cursor="pointer"
+            onClick={() => setCurrentView("phone")}
+            color="primary"
+          >
+            Change Number
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };

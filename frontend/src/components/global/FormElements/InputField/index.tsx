@@ -70,7 +70,7 @@ const InputField: React.FC<inputProps> = ({
           bg="#FAFAFB"
           borderColor="gray.300"
           _hover={{ borderColor: "primary" }}
-          borderRadius="0.656rem"
+          borderRadius="lg"
           border="1px solid #CDCDCD"
           autoComplete="off"
           isRequired={false}
@@ -100,7 +100,7 @@ const InputField: React.FC<inputProps> = ({
             {...register(name, { ...validateOptions })}
             placeholder={placeholder ? placeholder : ""}
             px="13px"
-            borderRadius="0.656rem"
+            borderRadius="lg"
             borderColor="inputBorder"
             min={0}
             borderWidth="1px"
