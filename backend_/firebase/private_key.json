@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "vertex-hack",
+  "private_key_id": "e548e4c7e45dde48cd31c96ab7df68036ad37dda",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCM2UfD/sQWthcJ\nv0wNXgjKI8ZEiSdfdK3+MJDi8nzKuGXGhN0dB+y9EA48N/RiJXhker1ur4OiV2Rb\nrS/bdIYR62oauc5FV8GK2sCDkI8QSHbp0CBNZaLbPUW5Y/Yw3kiaaEM0ydmUsUue\nxFaOKegG+JsbXpr9Bfe3Bb8rsJgVYwKFcuhwvakoTm5TcUpIVAjHbZxJFf5p4dSb\nDUONgyRCP/8XgGaRrqigxtVpr811dFzZgEoqYJZB4b5CPCvnBQ4orD77C8EENaG8\nM9fnB+JxmS+mPfLvEV88n0AaP5UsbOrvTjBr9cW64qLexGWGTpGAYbkClRkfRS6P\nL3LJkAP1AgMBAAECggEABlvOJZxcII+v5+dpo4uEkhDzY9IH+QM80lDsTufrl6tO\nIkbf70OVqHi6a8rgOYi/hVRqi5NY5KdVXIjWXu3vxOH/3vJXIZed9orRo3Q5695E\nSrdJU1/XQ6vhzfDOrdNwgP1cALIWzzkB1PUVg0LZEBeBHnHdmrao7ED81G1whZFA\nOGephCnUNGvLLW8d1DSoikhe0itjVPoAe4qAV1F0YzphPOiaV/3ORZYp+tevLssu\n4AMHSBELGQjvVIRh1i7hB0YJiRv4ZZfZXBSNa2b2VLAnt9kHWnx290OjpXlijEjG\nNteucYNNnUmTUCgJXsUFhNeQPG34zFqa1OrMnABtAQKBgQDHJlZRVeCfF5cg8V9c\ns+xVexOeQpcp2Rk1F1nZ0dqpGN/W0jsYktLsSlAXuJnUT1ZKWZIyaw2wKPAO3PrB\nS0qoHMAFKTL0iF4QuW/rEFXO3q0PjLrIJv/ztz2GgK3TrlxRW0+TN8vbSOsZbA1w\nTaCV2emZ2KSkDkDVHn0TRhJu5QKBgQC1Dl1gNIgY3kz357KVRFsPkX48y9AmVFTI\nkSvd3abGqworGdlFLRuRls0Svua6Z8mYKimu9PEGOG+//4bHfNz2L05VWdmXZRfq\nqERuDc7iOhrt6iWsYYWzMAPpCOzHWNwfUmrVKz6kXbt+dCfFN28yv/yzaVDMUEo3\nkEgaZaLf0QKBgEhCFcGvOjAfXBt82NAHDHI7lPOwT67Eccv8rAJHjWIbf2QvpXeW\nFmfb0tG4jkAlhTa25z/Z7f6D7A5IicdGrVDwFZAJ0c4+CHti/UO6Cphj3UEuG7tx\nwx7H1tANsoSC2EZArk/JR/NJstvng7zCvciBZ6wFmj9YWJe7V0B+BUQtAoGBAK0v\ncGH13bjr6vO2zTu6ht/9a6L70b7YK8EuG6e9vSmLsc5Ii2uAGj7I4KBtuoXTgSHs\nMrMH2QT6NuqQoXtwFGvoFCXQLDKEoLv0+H/M9Xev3NJ2hlK9dgZQh20A/Hwyo1vS\nmh4Nn33Zqt7qfKBIxjTlL/LtajwFEPjVKiMV1RYBAoGBALJoSdeyIMt/AziWPlK+\nfqJNEBgfETdN5JF3R0SuttSHk671gtJmZIBr8ivK1janns+RmJnSfcvxtFyaJNyk\nCGIGfoLD+Giv0oLNLZWARjfmknMI6+aQS+ImSFTCnAETM1l/cYlxhvfJsb+u8Qxx\n3AkTDCNjoZ8hanwmivfglazM\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-jqn7k@vertex-hack.iam.gserviceaccount.com",
+  "client_id": "108943242282568359504",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-jqn7k%40vertex-hack.iam.gserviceaccount.com"
+}
