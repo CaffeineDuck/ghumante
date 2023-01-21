@@ -26,6 +26,7 @@ class Hotel(models.Model):
     location_name = models.CharField(max_length=100)
     description = models.TextField()
     room_available = models.BooleanField(default=True)  # type: ignore
+    photo = models.ImageField(upload_to="hotel_photos", null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -41,12 +42,13 @@ class Hotel(models.Model):
 class Destination(models.Model):
     name = models.CharField(max_length=100)
     geolocation = models.PointField()
-    details = models.TextField()
+    description = models.TextField()
     category = models.ForeignKey(
         "DestinationCategory",
         on_delete=models.SET_NULL,
         null=True,
     )
+    photo = models.ImageField(upload_to="destination_photos", null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
