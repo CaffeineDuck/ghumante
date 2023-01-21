@@ -5,8 +5,8 @@ from trip.views import DestinationView, HotelView, LocalTripView
 router = routers.DefaultRouter()
 
 
-router.register("localtrip", LocalTripView)
-router.register("hotel", HotelView)
-router.register("destination", DestinationView)
+router.register("localtrip", LocalTripView, basename="localtrip")
+router.register("hotel", HotelView, basename="hotel")
+router.register("destination", DestinationView, basename="destination")
 
 urlpatterns = router.urls
