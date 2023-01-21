@@ -16,6 +16,9 @@ class LocalTrip(models.Model):
         db_table = "local_trip"
         verbose_name = "Local Trip"
 
+    def __str__(self):
+        return self.name
+
 
 class Hotel(models.Model):
     name = models.CharField(max_length=100)
@@ -30,6 +33,9 @@ class Hotel(models.Model):
     class Meta:
         db_table = "hotel"
         verbose_name = "Hotel"
+
+    def __str__(self):
+        return self.name
 
 
 class Destination(models.Model):
@@ -49,6 +55,9 @@ class Destination(models.Model):
         db_table = "destination"
         verbose_name = "Destination"
 
+    def __str__(self):
+        return self.name
+
 
 class DestinationCategory(models.Model):
     name = models.CharField(max_length=100)
@@ -60,3 +69,6 @@ class DestinationCategory(models.Model):
     class Meta:
         db_table = "destination_category"
         verbose_name = "Destination Category"
+
+    def __str__(self):
+        return self.name

@@ -30,7 +30,7 @@ SECRET_KEY = "django-insecure-482#@tdjo^a15xuf3hu5o8g%1+eshs*yfdxou-1x7))t@4ffu8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -49,9 +49,12 @@ INSTALLED_APPS = [
     # Custom apps
     "rest_framework_gis",
     "trip",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -79,6 +82,7 @@ TEMPLATES = [
     },
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 WSGI_APPLICATION = "backend_.wsgi.application"
 
 
