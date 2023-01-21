@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Circle,
   Flex,
   Modal,
@@ -14,21 +15,22 @@ import {
 import React, { useState } from "react";
 import { useSteps } from "chakra-ui-steps";
 import Map from "../Map";
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
+import ChooseDate from "../ChooseDate";
+import { Icon } from "@iconify/react";
 interface PlanTripModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-const content = <Flex py={4}>Hello</Flex>;
-const steps = [
-  { label: "Step 1", content },
-  { label: "Step 2", content },
-  { label: "Step 3", content },
-];
+
 const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
   const { nextStep, prevStep, setStep, activeStep } = useSteps({
     initialStep: 0,
   });
+  const method = useForm({ mode: "all" });
+  const { handleSubmit } = method;
   const [address, setAddress] = useState<string>("");
+  const onSubmit = async (values: FieldValues) => {};
   const renderCorrectContent = () => {
     if (activeStep === 0)
       return (
@@ -40,11 +42,26 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
             width="100%"
             setAddress={setAddress}
           />
+          <Flex justify="end" mt="4rem">
+            <Button
+              variant={"solid"}
+              colorScheme={"primaryScheme"}
+              size={"lg"}
+              onClick={nextStep}
+              rightIcon={
+                <Icon fontSize={18} icon="material-symbols:arrow-right-alt" />
+              }
+            >
+              Continue
+            </Button>
+          </Flex>
         </Box>
       );
+    else if (activeStep === 1)
+      return <ChooseDate onContinue={() => nextStep()} />;
   };
   return (
-    <Modal size="6xl" isOpen={isOpen} onClose={onClose}>
+    <Modal size="4xl" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader></ModalHeader>
@@ -100,7 +117,13 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                 </Flex>
               ))}
             </VStack>
-            <Box flex="1">{renderCorrectContent()}</Box>
+            <Box flex="1">
+              <FormProvider {...method}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  {renderCorrectContent()}
+                </form>
+              </FormProvider>
+            </Box>
           </Flex>
         </ModalBody>
       </ModalContent>
