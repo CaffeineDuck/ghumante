@@ -2,6 +2,8 @@ import logging
 import requests
 from googlemaps import Client
 import typing as ty
+import requests
+import json
 
 
 class Location(ty.TypedDict):
@@ -77,7 +79,25 @@ class GoogleMapsSeederClient:
             )
 
             self.logger.warn(f"Found place: {result}")
+            request_json = {
+                "name": result["name"],
+                "geolocation": json.dumps(
+                    {
+                        "type": "Point",
+                        "coordinates": [result["longitude"], result["latitude"]],
+                    }
+                ),
+                "details": f"Description for {result['name']}",
+                "location_name": result["address"],
+                "room_available": True,
+                "category": 1,
+            }
 
-            results.append(result)
+            response = requests.post(
+                "http://localhost:8000/api/destination/",
+                data=request_json,
+                files={"photo": open(image_name_normalized, "rb")},
+            )
+            print(response.text)
 
-        return results, res["next_page_token"]
+        # return results, res["next_page_token"]
