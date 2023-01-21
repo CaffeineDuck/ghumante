@@ -1,7 +1,6 @@
 from django.contrib.gis.db import models
 
 
-# Create your models here.
 class LocalTrip(models.Model):
     name = models.CharField(max_length=100)
     geolocation = models.PointField()
