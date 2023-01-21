@@ -70,12 +70,11 @@ export default function HeroSection() {
                   color="light"
                   fontSize="md"
                   onClick={() => router.push("/")}
-                  textTransform="uppercase"
                   _hover={{
                     bg: "primaryHover",
                   }}
                 >
-                  Near me
+                  Explroe near me
                 </Button>
                 <Button
                   variant={"solid"}

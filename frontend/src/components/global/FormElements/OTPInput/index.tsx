@@ -73,8 +73,9 @@ const OTPInput: React.FC<inputProps> = ({
                 h="3.75rem"
                 w="4.31rem"
                 fontSize="1.5rem"
+                outlineColor="none"
                 borderRadius="none"
-                borderColor="gray.4"
+                borderColor="gray.400"
                 _hover={{ borderColor: "primary", borderWidth: "0 0 2px 0" }}
                 _focus={{ borderColor: "primary", borderWidth: "0 0 2px 0" }}
               />

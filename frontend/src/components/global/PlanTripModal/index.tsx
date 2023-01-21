@@ -70,6 +70,7 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
           _hover={{ color: "var(--chakra-colors-primary)" }}
         />
         <ModalBody
+          transition="200ms linear"
           minH="500px"
           px={{ base: "10px", md: "16px", lg: "24px" }}
           py="2rem"
