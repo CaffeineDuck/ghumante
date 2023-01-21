@@ -6,13 +6,8 @@ services:
       - 8000:8000
     volumes:
       - .:/app
-      - video_uploads:/app/uploads
     depends_on:
       - db
-      - redis_dramatiq
-    environment:
-      - DB_URL=postgresql://postgres:postgres@db:5432/video_db
-      - REDIS_URL=redis://redis_dramatiq:6379
 
   db:
     image: postgres:13-alpine
@@ -23,8 +18,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=video_db
+      - POSTGRES_DB=ghumante_db
 
 volumes:
   postgres_data:
-  video_uploads:
