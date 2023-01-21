@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+
 import dotenv
 
 dotenv.load_dotenv()
@@ -44,6 +45,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.gis",
+    # Custom apps
+    "rest_framework",
+    "rest_framework_gis",
+    "trip",
 ]
 
 MIDDLEWARE = [
