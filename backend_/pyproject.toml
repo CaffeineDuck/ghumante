@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "ghumante_backend"
+version = "0.1.0"
+description = "ghumante ko backend ho ni yo"
+authors = ["Neeraj Dai"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+djangorestframework = "^3.14.0"
+Django = "^4.1.5"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
