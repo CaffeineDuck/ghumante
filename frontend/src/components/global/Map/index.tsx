@@ -141,7 +141,7 @@ const Map: React.FC<MapProps> = ({
   }, []);
   if (!isLoaded) {
     return (
-      <Box p="80px">
+      <Box p="80px" textAlign="center">
         <Spinner size="lg" color="primary" />
       </Box>
     );
