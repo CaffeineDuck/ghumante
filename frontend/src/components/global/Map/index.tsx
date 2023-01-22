@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Spinner, Tooltip, useColorModeValue } from "@chakra-ui/react";
 import {
   Marker,
@@ -38,6 +38,7 @@ export type MapProps = {
   searchBoxFromTop?: string;
   searchReadOnly?: boolean;
   setAddress?: any;
+  askCurrentLocation?: boolean;
 };
 const Map: React.FC<MapProps> = ({
   height,
@@ -45,6 +46,7 @@ const Map: React.FC<MapProps> = ({
   searchBoxFromTop,
   searchReadOnly,
   setAddress,
+  askCurrentLocation,
 }) => {
   const [marker, setMarker] = useState<any>({});
   const [libraries] = useState<any>(["places"]);
@@ -76,6 +78,7 @@ const Map: React.FC<MapProps> = ({
             lng,
             time: new Date(),
           });
+          console.log(lat, lng);
           const res = await getAddressFromGeocode(lat, lng);
           if (res) {
             setValue(res?.results[0]?.formatted_address, false);
@@ -99,16 +102,20 @@ const Map: React.FC<MapProps> = ({
   const options = {
     styles: [
       {
-        featureType: "administrative.country",
-        elementType: "geometry",
+        featureType: "poi",
+        elementType: "labels",
         stylers: [
           {
-            visibility: "simplified",
+            visibility: "off",
           },
           {
             hue: "#ff0000",
           },
         ],
+      },
+      {
+        featureType: "transit.station.bus",
+        stylers: [{ visibility: "of" }],
       },
     ],
     zoomControl: true,
@@ -139,6 +146,12 @@ const Map: React.FC<MapProps> = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    if (isLoaded && askCurrentLocation) {
+      fetchLocation();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded, askCurrentLocation]);
   if (!isLoaded) {
     return (
       <Box p="80px" textAlign="center">
