@@ -29,6 +29,7 @@ class HotelView(ModelViewSet):
             query_parms:
                 x_cord : float
                 y_cord : float
+                range : float (in km)
         """
         if not request.GET.dict():
             serializer = HotelSerializer(self.queryset, many=True)
@@ -57,6 +58,7 @@ class DestinationView(ModelViewSet):
             query_parms:
                 x_cord : float
                 y_cord : float
+                range : float (in km)
         """
         if not request.GET.dict():
             serializer = DestinationSerializer(self.queryset, many=True)
