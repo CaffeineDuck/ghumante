@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+from core.models import User
 
 
 class LocalTrip(models.Model):
@@ -7,6 +8,7 @@ class LocalTrip(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     hotel = models.ForeignKey("Hotel", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

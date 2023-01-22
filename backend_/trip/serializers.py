@@ -19,6 +19,11 @@ class HotelSerializer(GeoFeatureModelSerializer):
 
 
 class LocalTripSerializer(GeoFeatureModelSerializer):
+
+    user = serializers.PrimaryKeyRelatedField(
+        read_only=True, default=serializers.CurrentUserDefault()
+    )
+
     class Meta:
         model = LocalTrip
         geo_field = "geolocation"
