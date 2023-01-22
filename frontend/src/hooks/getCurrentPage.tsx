@@ -5,7 +5,7 @@ interface Step {
     component: React.ReactNode;
 }
 
-const steps: Step[] = [
+const initialSteps: Step[] = [
     {
         stepNumber: 0,
         component: <h1>Hello World</h1>
@@ -14,19 +14,23 @@ const steps: Step[] = [
     }
 ]
 
-const findStep = (stepNumber: number) => {
-    return steps.find(step => step.stepNumber === stepNumber);
-}
 
 
 const useStepper = () => {
 
+    const [steps, setSteps] = useState<Step[]>(initialSteps);
+
     const [currentStep, setCurrentStep] = useState<Step>(
-        findStep(0)!
+        steps[0]
     );
 
-    return [currentStep, setCurrentStep];
 
+    return {
+        steps,
+        setSteps,
+        currentStep,
+        setCurrentStep,
+    }
 
 
 }
