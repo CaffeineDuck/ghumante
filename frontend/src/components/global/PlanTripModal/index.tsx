@@ -21,6 +21,7 @@ import { Icon } from "@iconify/react";
 import AppContext from "@/context/AppContext";
 import useCustomToast from "@/hooks/useCustomToast";
 import ChooseMap from "./ChooseMap";
+import useCurrentStep from "@/hooks/useCurrentStep";
 interface PlanTripModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -28,47 +29,16 @@ interface PlanTripModalProps {
 
 const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
   const toast = useCustomToast();
-  const { nextStep, prevStep, setStep, activeStep } = useSteps({
-    initialStep: 0,
-  });
-  const [isMapChoosed, setIsMapChoosed] = useState<boolean>(false);
   const method = useForm({ mode: "all" });
   const { handleSubmit } = method;
-  const { coOrdinates, setCoOrdinates, address, setAddress } =
-    useContext(AppContext);
+  const { address } = useContext(AppContext);
   const onSubmit = async (values: FieldValues) => {};
-
-  const renderCorrectContent = () => {
-    if (!address || !isMapChoosed)
-      return <ChooseMap handleContinue={() => setIsMapChoosed(true)} />;
-    if (activeStep === 0)
-      return (
-        <Box border="1">
-          <Map
-            searchReadOnly={false}
-            searchBoxFromTop="5px"
-            height="400px"
-            width="100%"
-            setCoOrdinates={setCoOrdinates}
-            setAddress={setAddress}
-          />
-          <Flex justify="end" mt="4rem">
-            <Button
-              variant={"solid"}
-              colorScheme={"primaryScheme"}
-              size={"lg"}
-              onClick={nextStep}
-              rightIcon={
-                <Icon fontSize={18} icon="material-symbols:arrow-right-alt" />
-              }
-            >
-              Continue
-            </Button>
-          </Flex>
-        </Box>
-      );
-    else if (activeStep === 1)
-      return <ChooseDate onContinue={() => nextStep()} />;
+  const { currentStep, setCurrentStep, setSteps, steps } = useCurrentStep();
+  const handleContinue = () => {
+    if (currentStep.stepNumber === 0) {
+      if (!address) return toast.info("Please choose your location");
+      setCurrentStep(steps[currentStep.stepNumber + 1]);
+    }
   };
   return (
     <Modal size="4xl" isOpen={isOpen} onClose={onClose}>
@@ -86,7 +56,7 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
           py="2rem"
         >
           <Flex>
-            {isMapChoosed && address && (
+            {currentStep.stepNumber !== 0 && (
               <VStack
                 p="4"
                 w="14rem"
@@ -133,7 +103,23 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
             <Box flex="1">
               <FormProvider {...method}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  {renderCorrectContent()}
+                  {currentStep.component}
+                  <Flex justify="end" mt="4rem">
+                    <Button
+                      variant={"solid"}
+                      colorScheme={"primaryScheme"}
+                      size={"lg"}
+                      onClick={handleContinue}
+                      rightIcon={
+                        <Icon
+                          fontSize={18}
+                          icon="material-symbols:arrow-right-alt"
+                        />
+                      }
+                    >
+                      Continue
+                    </Button>
+                  </Flex>
                 </form>
               </FormProvider>
             </Box>
