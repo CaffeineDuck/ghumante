@@ -30,6 +30,9 @@ class HotelView(ModelViewSet):
                 x_cord : float
                 y_cord : float
         """
+        if not request.GET.dict():
+            serializer = HotelSerializer(self.queryset, many=True)
+            return Response(data=serializer.data, status=200)
         serializer = CoordinateSerializer(data=request.GET.dict())
         if serializer.is_valid():
             point = Point(*serializer.data.values())
@@ -55,6 +58,10 @@ class DestinationView(ModelViewSet):
                 x_cord : float
                 y_cord : float
         """
+        if not request.GET.dict():
+            serializer = DestinationSerializer(self.queryset, many=True)
+            return Response(data=serializer.data, status=200)
+
         serializer = CoordinateSerializer(data=request.GET.dict())
         if serializer.is_valid():
             point = Point(*serializer.data.values())
