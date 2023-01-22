@@ -1,12 +1,13 @@
 from rest_framework.schemas.openapi import AutoSchema
 from rest_framework.viewsets import ModelViewSet
-from .models import Destination, Hotel, LocalTrip
+from .models import Destination, Hotel, LocalTrip, DestinationCategory
 from django.contrib.gis.geos import Point
 from .serializers import (
     DestinationSerializer,
     HotelSerializer,
     LocalTripSerializer,
     CoordinateSerializer,
+    DestinationCategorySerializer,
 )
 from rest_framework.response import Response
 from django.contrib.gis.measure import D
@@ -75,3 +76,10 @@ class DestinationView(ModelViewSet):
 
         else:
             return Response(serializer.errors, status=200)
+
+
+class DestionationCategoryViewSet(ModelViewSet):
+    queryset = DestinationCategory.objects.all()
+    serializer_class = DestinationCategorySerializer
+
+    schema = AutoSchema(tags=["destination-category"])
