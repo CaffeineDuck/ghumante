@@ -1,5 +1,5 @@
 import Map from "@/components/global/Map";
-import CulturalSite from "@/components/nearby/CulturalSite";
+import CulturalSite from "@/components/nearby/TripCard";
 import FoodCard from "@/components/nearby/FoodCard";
 import RestaurantCard from "@/components/nearby/RestaurantCard";
 import useGetDestination from "@/hooks/useGetDestinations";
@@ -17,6 +17,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
+import Destination from "@/components/nearby/DestinationCard";
 
 const NearByPage = () => {
   const { hotels } = useGetHotels();
@@ -37,7 +38,7 @@ const NearByPage = () => {
       >
         <Tabs>
           <TabList position="sticky" zIndex={5} top="0rem" bg="bgColor">
-            {["Hotels", "Local Cuisine", "Cultural Sites"].map((item) => (
+            {["Hotels", "Local Trip"].map((item) => (
               <Tab
                 fontSize="md"
                 key={item}
@@ -67,7 +68,7 @@ const NearByPage = () => {
             </TabPanel>
             <TabPanel px="0">
               <Text as="h3" color="dark" fontSize="1.4rem">
-                Special local cuisine near you
+                All trips near you
               </Text>
               <SimpleGrid
                 spacingX="1rem"
@@ -75,8 +76,8 @@ const NearByPage = () => {
                 spacingY="1.5rem"
                 columns={{ base: 1, md: 2 }}
               >
-                {[1, 2, 3, 4, 5].map((item, index) => (
-                  <FoodCard key={index} />
+                {destinations.map((destination, index) => (
+                  <Destination destination={destination} key={index} />
                 ))}
               </SimpleGrid>
             </TabPanel>
@@ -90,9 +91,9 @@ const NearByPage = () => {
                 mt="1rem"
                 columns={{ base: 1, md: 2 }}
               >
-                {[1, 2, 3, 4, 5].map((item, index) => (
+                {/* {[1, 2, 3, 4, 5].map((item, index) => (
                   <CulturalSite key={index} />
-                ))}
+                ))} */}
               </SimpleGrid>
             </TabPanel>
           </TabPanels>
