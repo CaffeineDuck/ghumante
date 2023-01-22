@@ -76,7 +76,9 @@ const ChooseDate: React.FC = () => {
   };
   return (
     <Box>
-      <Text as="h4">Choose dates</Text>
+      <Text fontSize="1.3rem" as="h4">
+        Choose Nationality & Date ranges
+      </Text>
       <Box my="2rem">
         <InputField
           name="nationality"

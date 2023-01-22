@@ -1,9 +1,10 @@
+import { mapUrl } from "@/utils/mapUrl";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import React from "react";
 
-const CulturalSite = () => {
+const TripCard: React.FC<{ trip: TripInterface }> = ({ trip }) => {
   return (
     <Box
       cursor="pointer"
@@ -14,7 +15,12 @@ const CulturalSite = () => {
       _hover={{ shadow: "md" }}
     >
       <Box pos="relative" h="10rem">
-        <Image src="/temple.jpeg" layout="fill" alt="Hotel" objectFit="cover" />
+        <Image
+          src={mapUrl(trip.name)}
+          layout="fill"
+          alt="Hotel"
+          objectFit="cover"
+        />
       </Box>
       <Box p="0.7rem">
         <Text
@@ -56,4 +62,4 @@ const CulturalSite = () => {
   );
 };
 
-export default CulturalSite;
+export default TripCard;
