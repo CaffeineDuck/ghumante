@@ -25,6 +25,7 @@ import useCustomToast from "@/hooks/useCustomToast";
 import StepFooter from "../ContinueButton";
 import { Icon } from "@iconify/react";
 import { useStepContext } from "@/context/StepContext";
+import { ColorChangingCircle } from "./ColorChangingCircle";
 interface PlanTripModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -32,12 +33,12 @@ interface PlanTripModalProps {
 
 const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
   const toast = useCustomToast();
-  
+
   const { steps, currentStep, setCurrentStep } = useStepContext();
 
   const { handleSubmit, trigger } = useFormContext();
   const { address } = useContext(AppContext);
-  const onSubmit = async (values: FieldValues) => {};
+  const onSubmit = async (values: FieldValues) => { };
   // const { currentStep, setCurrentStep, setSteps, steps } = useCurrentStep();
   const handleContinue = async () => {
     // if (currentStep.stepNumber === 0) {
@@ -64,7 +65,9 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
           py="2rem"
         >
           <Flex>
-            {currentStep.stepNumber !== 0 && (
+
+
+            {currentStep.showSidebar && steps.map((step, index) => (
               <VStack
                 px="4"
                 w="14rem"
@@ -79,7 +82,9 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                   />
                 }
               >
-                {steps.slice(1)?.map((step, index) => (
+                {steps.map((step, index) => (
+
+                  step.showInSidebar &&
                   <Flex
                     key={index}
                     align="center"
@@ -87,27 +92,9 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                     cursor="pointer"
                     gap={{ base: "1.5rem", md: "1.82rem" }}
                   >
-                    <Circle
-                      color={
-                        currentStep.stepNumber === step.stepNumber
-                          ? "light"
-                          : "gray.400"
-                      }
-                      size="35px"
-                      bg={
-                        currentStep.stepNumber === step.stepNumber
-                          ? "primary"
-                          : "transparent"
-                      }
-                      borderColor={
-                        currentStep.stepNumber === step.stepNumber
-                          ? "primary"
-                          : "gray.300"
-                      }
-                      borderWidth="1px"
-                    >
-                      <Icon icon={step.iconName} fontSize={20} />
-                    </Circle>
+
+                    <ColorChangingCircle currentStepNumber={currentStep.stepNumber} stepNumber={step.stepNumber} iconName={step.iconName} />
+                    
                     <Text
                       whiteSpace="nowrap"
                       fontWeight="medium"
@@ -123,7 +110,12 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                   </Flex>
                 ))}
               </VStack>
-            )}
+
+            ))}
+
+
+            {/* {currentStep.stepNumber !== 0 && (
+            )} */}
             <Box flex="1">
               <form onSubmit={handleSubmit(onSubmit)}>
                 <currentStep.component />
