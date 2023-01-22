@@ -42,7 +42,7 @@ class GoogleMapsSeederClient:
             for chunk in photo:
                 f.write(chunk)
 
-    def find_and_save_images(self, location: str, page_token: str = None):
+    def find_and_save_images(self, location: str, category_id, page_token: str = None):
 
         res = self._client.places(location, page_token=page_token)
         if res["status"] != "OK":
@@ -90,7 +90,8 @@ class GoogleMapsSeederClient:
                 "description": f"Description for {result['name']}",
                 "location_name": result["address"],
                 "room_available": True,
-                "category": 1,
+                "category": category_id,
+                "address": result["address"],
             }
 
             response = requests.post(

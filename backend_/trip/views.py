@@ -63,35 +63,74 @@ class LocalTripView(ModelViewSet):
         return Response({"message": "LocalTrip deleted successfully"}, 200)
 
 
+# class HotelView(ModelViewSet):
+#     schema = AutoSchema(tags=["hotel"])
+#     queryset = Hotel.objects.all()
+#     serializer_class = HotelSerializer
+#     pagination_class = CustomPagination
+#
+#     def list(self, request):
+#         """
+#         if no query parms are provided then every row is returned \n
+#             query_parms:
+#                 x : float
+#                 y : float
+#                 range : float (in km)
+#         """
+#
+#         if not (
+#             "x" in request.GET.dict()
+#             and "y" in request.GET.dict()
+#             and "range" in request.GET.dict()
+#         ):
+#             serializer = HotelSerializer(self.queryset, many=True)
+#             return Response(data=serializer.data, status=200)
+#         serializer = CoordinateSerializer(data=request.GET.dict())
+#         if serializer.is_valid():
+#             point = Point(serializer.data["y"], serializer.data["x"])
+#             query_set = Hotel.objects.filter(
+#                 geolocation__distance_lte=(point, D(km=serializer.data["range"]))
+#             )
+#             hotel_serializer = HotelSerializer(query_set, many=True)
+#             return Response(status=200, data=hotel_serializer.data)
+#
+#         else:
+#             return Response(serializer.errors, status=200)
+#
+#     @action(detail=False, methods=["get"])
+#     def get_random_hotel(self, request):
+#         hotel = Hotel.objects.all().order_by("?").first()
+#         serializer = HotelSerializer(hotel)
+#         return Response(serializer.data, status=200)
 class HotelView(ModelViewSet):
     schema = AutoSchema(tags=["hotel"])
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
     pagination_class = CustomPagination
 
+    def get_queryset(self):
+        queryset = self.queryset
+        if (
+            "x" in self.request.GET.dict()
+            and "y" in self.request.GET.dict()
+            and "range" in self.request.GET.dict()
+        ):
+            serializer = CoordinateSerializer(data=self.request.GET.dict())
+            if serializer.is_valid():
+                point = Point(x=serializer.data["y"], y=serializer.data["x"])
+                queryset = Hotel.objects.filter(
+                    geolocation__distance_lte=(point, D(km=serializer.data["range"]))
+                )
+        return queryset
+
     def list(self, request):
-        """
-        if no query parms are provided then every row is returned \n
-            query_parms:
-                x : float
-                y : float
-                range : float (in km)
-        """
-
-        if not request.GET.dict():
-            serializer = HotelSerializer(self.queryset, many=True)
-            return Response(data=serializer.data, status=200)
-        serializer = CoordinateSerializer(data=request.GET.dict())
-        if serializer.is_valid():
-            point = Point(serializer.data["y"], serializer.data["x"])
-            query_set = Hotel.objects.filter(
-                geolocation__distance_lte=(point, D(km=serializer.data["range"]))
-            )
-            hotel_serializer = HotelSerializer(query_set, many=True)
-            return Response(status=200, data=hotel_serializer.data)
-
-        else:
-            return Response(serializer.errors, status=200)
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     @action(detail=False, methods=["get"])
     def get_random_hotel(self, request):
@@ -100,42 +139,80 @@ class HotelView(ModelViewSet):
         return Response(serializer.data, status=200)
 
 
+# class DestinationView(ModelViewSet):
+#     schema = AutoSchema(tags=["destination"])
+#     queryset = Destination.objects.all()
+#     serializer_class = DestinationSerializer
+#     pagination_class = CustomPagination
+#
+#     def list(self, request):
+#         """
+#         if no query parms are provided then every row is returned \n
+#             query_parms:
+#                 x : float
+#                 y : float
+#                 range : float (in km)
+#                 category: int (id of category)
+#         """
+#
+#         if not (
+#             "x" in request.GET.dict()
+#             and "y" in request.GET.dict()
+#             and "range" in request.GET.dict()
+#         ):
+#             self.queryset = self.queryset.all()
+#             if "category" in request.GET.dict():
+#                 self.queryset = self.queryset.filter(
+#                     category=request.GET.dict()["category"]
+#                 )
+#             serializer = DestinationSerializer(self.queryset, many=True)
+#             return Response(data=serializer.data, status=200)
+#         serializer = CoordinateSerializer(data=request.GET.dict())
+#         if serializer.is_valid():
+#             point = Point(x=serializer.data["y"], y=serializer.data["x"])
+#             query_set = Destination.objects.filter(
+#                 geolocation__distance_lte=(point, D(km=serializer.data["range"]))
+#             )
+#             if "category" in request.GET.dict():
+#                 query_set = query_set.filter(category=request.GET.dict()["category"])
+#             destination_serializer = DestinationSerializer(query_set, many=True)
+#             return Response(status=200, data=destination_serializer.data)
+#
+#         else:
+#             return Response(serializer.errors, status=200)
+
+
 class DestinationView(ModelViewSet):
     schema = AutoSchema(tags=["destination"])
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
     pagination_class = CustomPagination
 
-    def list(self, request):
-        """
-        if no query parms are provided then every row is returned \n
-            query_parms:
-                x : float
-                y : float
-                range : float (in km)
-                category: int (id of category)
-        """
-        if not request.GET.dict():
-            self.queryset = self.queryset.all()
-            if "category" in request.GET.dict():
-                self.queryset = self.queryset.filter(
-                    category=request.GET.dict()["category"]
+    def get_queryset(self):
+        queryset = self.queryset
+        if (
+            "x" in self.request.GET.dict()
+            and "y" in self.request.GET.dict()
+            and "range" in self.request.GET.dict()
+        ):
+            serializer = CoordinateSerializer(data=self.request.GET.dict())
+            if serializer.is_valid():
+                point = Point(x=serializer.data["y"], y=serializer.data["x"])
+                queryset = Destination.objects.filter(
+                    geolocation__distance_lte=(point, D(km=serializer.data["range"]))
                 )
-            serializer = DestinationSerializer(self.queryset, many=True)
-            return Response(data=serializer.data, status=200)
-        serializer = CoordinateSerializer(data=request.GET.dict())
-        if serializer.is_valid():
-            point = Point(x=serializer.data["y"], y=serializer.data["x"])
-            query_set = Destination.objects.filter(
-                geolocation__distance_lte=(point, D(km=serializer.data["range"]))
-            )
-            if "category" in request.GET.dict():
-                query_set = query_set.filter(category=request.GET.dict()["category"])
-            destination_serializer = DestinationSerializer(query_set, many=True)
-            return Response(status=200, data=destination_serializer.data)
+        if "category" in self.request.GET.dict():
+            queryset = queryset.filter(category=self.request.GET.dict()["category"])
+        return queryset
 
-        else:
-            return Response(serializer.errors, status=200)
+    def list(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class DestionationCategoryViewSet(ModelViewSet):

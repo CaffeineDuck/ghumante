@@ -36,6 +36,8 @@ class DestinationCategorySerializer(serializers.ModelSerializer):
 
 
 class DestinationSerializer(GeoFeatureModelSerializer):
+    photo = serializers.ImageField(max_length=None, use_url=False)
+
     class Meta:
         model = Destination
         geo_field = "geolocation"
