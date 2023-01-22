@@ -5,6 +5,7 @@ import {
   FormLabel,
   Input,
   InputGroup,
+  InputLeftAddon,
   InputLeftElement,
   InputRightElement,
   Text,
@@ -22,6 +23,7 @@ type inputProps = {
   validateOptions?: object;
   readOnly?: boolean;
   leftIcon?: string;
+  leftAddon?: string;
 };
 const InputField: React.FC<inputProps> = ({
   type,
@@ -33,6 +35,7 @@ const InputField: React.FC<inputProps> = ({
   validateOptions,
   readOnly,
   leftIcon,
+  leftAddon,
 }) => {
   const {
     register,
@@ -78,6 +81,11 @@ const InputField: React.FC<inputProps> = ({
         />
       ) : (
         <InputGroup>
+          {leftAddon && (
+            <InputLeftAddon borderColor="inputBorder" bg="bgInput" h="54px">
+              {leftAddon}
+            </InputLeftAddon>
+          )}
           {leftIcon && (
             <InputLeftElement h="full" p="2">
               <Icon

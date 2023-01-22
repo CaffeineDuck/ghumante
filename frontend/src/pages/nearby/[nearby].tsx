@@ -29,6 +29,7 @@ import Head from "next/head";
 import React from "react";
 import useGetByCategoryAndID from "@/hooks/useGetByCategoryAndID";
 import { mapUrl } from "@/utils/mapUrl";
+import withAuth from "@/hoc/withAuth";
 
 const SingleNearByPage: React.FC<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -164,7 +165,7 @@ const SingleNearByPage: React.FC<
   );
 };
 
-export default SingleNearByPage;
+export default withAuth(SingleNearByPage);
 
 function TableRow({ label, value }: any) {
   return (

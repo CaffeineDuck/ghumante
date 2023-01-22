@@ -12,6 +12,14 @@ import {
   useColorModeValue,
   useDisclosure,
   Avatar,
+  HStack,
+  MenuItem,
+  Divider,
+  MenuList,
+  MenuButton,
+  Menu,
+  Center,
+  Heading,
 } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
@@ -25,22 +33,6 @@ export default function Navbar() {
     setIsAuthenticated(false);
     setProfile(null);
   };
-  // const NAV_ITEMS = useMemo(
-  //   () => [
-  //     {
-  //       label: "Explore",
-  //       href: "/explore",
-  //     },
-  //     {
-  //       label: "Categories",
-  //       children: categories?.map((category) => ({
-  //         label: category.name,
-  //         href: `/category/${category.id}`,
-  //       })),
-  //     },
-  //   ],
-  //   [categories]
-  // );
 
   const MobileNav = () => {
     return (
@@ -132,33 +124,130 @@ export default function Navbar() {
         </Flex>
 
         {isAuthenticated ? (
-          <Stack
-            flex={{ base: 1, md: 0 }}
-            justify={"flex-end"}
-            direction={"row"}
-            spacing={6}
-            align="center"
-          >
-            <Box display="flex" gap={2} alignItems="center">
-              <Avatar size="md" />
-              <Text size="md">{`${profile.name}`.split(" ")[0]}</Text>
-            </Box>
-            <Button
-              display={{ base: "none", md: "inline-flex" }}
-              fontSize={"sm"}
-              fontWeight={600}
-              as={"a"}
-              color={"white"}
-              bg={"primary"}
-              href={"/register"}
-              _hover={{
-                bg: "primaryHover",
-              }}
-              onClick={() => logoout()}
+          <Menu>
+            <MenuButton
+              bg="#eeeeee"
+              boxShadow="rgba(0, 0, 0, 0.18) 0px 2px 4px"
+              color=""
+              fontSize="1.1rem"
+              borderRadius="18px"
+              as={Button}
+              px="0"
+              paddingRight="10px"
+              h="fit-content"
             >
-              Logout
-            </Button>
-          </Stack>
+              <HStack>
+                <Avatar size="sm" />
+                <Text
+                  fontSize={18}
+                  color="gray.600"
+                  textTransform="capitalize"
+                  as="span"
+                >
+                  <Icon icon="ic:round-menu" />
+                </Text>
+              </HStack>
+            </MenuButton>
+            <MenuList
+              bg="#ffffff"
+              zIndex={5}
+              py="0"
+              minW="250px"
+              // py={5}
+              minH="150px"
+              borderRadius="lg"
+              boxShadow="sm"
+            >
+              {/* <MenuItem
+                _hover={{ bg: "transparent" }}
+                bg="transparent"
+                cursor="text"
+                px={25}
+              >
+                <Flex direction="column">
+                  <Text as="h3" fontSize="17px">
+                    {profile.phone_number}
+                  </Text>
+                  <Text as="p" fontSize="14px" color="#777777">
+                    Email: {profile.email || "N/A"}
+                  </Text>
+                </Flex>
+              </MenuItem>
+              <Divider h="10px" />
+              <MenuItem
+                px={25}
+                bg="transparent"
+                _hover={{ bg: "transparent" }}
+                fontSize="1.1rem"
+                onClick={() => {
+                  logoout();
+                }}
+              >
+                <HStack>
+                  <Icon
+                    icon="ic:baseline-logout"
+                    color="var(--chakra-colors-primary)"
+                  />
+                  <Text fontSize={15} color="var(--chakra-colors-primary)">
+                    Logout
+                  </Text>
+                </HStack>
+              </MenuItem> */}
+
+              <Box
+                maxW={"270px"}
+                w={"full"}
+                bg={"light"}
+                boxShadow={"2xl"}
+                rounded={"md"}
+                overflow={"hidden"}
+              >
+                <Flex justify={"center"} mt={12}>
+                  <Avatar
+                    size={"lg"}
+                    alt={profile?.phone_number}
+                    css={{
+                      border: "2px solid white",
+                    }}
+                  />
+                </Flex>
+
+                <Box p={6}>
+                  <Stack spacing={0} align={"center"} mb={5}>
+                    <Heading
+                      fontSize={"2xl"}
+                      fontWeight={500}
+                      fontFamily={"body"}
+                    >
+                      {profile?.first_name} {profile?.last_name}
+                    </Heading>
+                    <Text color={"gray.500"}>{profile?.phone_number}</Text>
+                  </Stack>
+
+                  <Button
+                    w={"full"}
+                    mt={8}
+                    bg={"primary"}
+                    color={"white"}
+                    rounded={"md"}
+                    onClick={() => logoout()}
+                    leftIcon={
+                      <Icon
+                        icon="material-symbols:logout-rounded"
+                        fontSize={18}
+                      />
+                    }
+                    _hover={{
+                      transform: "primaryHover",
+                      boxShadow: "lg",
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </Box>
+              </Box>
+            </MenuList>
+          </Menu>
         ) : (
           <Stack
             flex={{ base: 1, md: 0 }}
@@ -167,29 +256,18 @@ export default function Navbar() {
             spacing={6}
           >
             <Button
-              as={"a"}
-              fontSize={"md"}
-              fontWeight={400}
-              variant={"link"}
-              href={"/login"}
-              color="dark"
-              _hover={{ color: "primary" }}
-            >
-              Sign In
-            </Button>
-            <Button
               display={{ base: "none", md: "inline-flex" }}
               fontSize={"md"}
               fontWeight={600}
               as={"a"}
               color={"white"}
               bg={"primary"}
-              href={"/register"}
+              href={"/login"}
               _hover={{
                 bg: "primaryHover",
               }}
             >
-              Sign Up
+              Sign In
             </Button>
           </Stack>
         )}

@@ -17,6 +17,7 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import Destination from "@/components/nearby/DestinationCard";
 import AppContext from "@/context/AppContext";
+import withAuth from "@/hoc/withAuth";
 
 const NearByPage = () => {
   // const { trips } = useGetTrips()
@@ -151,4 +152,4 @@ const NearByPage = () => {
   );
 };
 
-export default NearByPage;
+export default withAuth(NearByPage);
