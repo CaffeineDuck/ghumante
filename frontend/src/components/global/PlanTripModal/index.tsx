@@ -21,9 +21,10 @@ import {
 } from "react-hook-form";
 import AppContext from "@/context/AppContext";
 import useCustomToast from "@/hooks/useCustomToast";
-import useCurrentStep from "@/hooks/useCurrentStep";
+//import useCurrentStep from "@/hooks/useCurrentStep";
 import StepFooter from "../ContinueButton";
 import { Icon } from "@iconify/react";
+import { useStepContext } from "@/context/StepContext";
 interface PlanTripModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -31,19 +32,21 @@ interface PlanTripModalProps {
 
 const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
   const toast = useCustomToast();
+  
+  const { steps, currentStep, setCurrentStep } = useStepContext();
 
   const { handleSubmit, trigger } = useFormContext();
   const { address } = useContext(AppContext);
   const onSubmit = async (values: FieldValues) => {};
-  const { currentStep, setCurrentStep, setSteps, steps } = useCurrentStep();
+  // const { currentStep, setCurrentStep, setSteps, steps } = useCurrentStep();
   const handleContinue = async () => {
-    if (currentStep.stepNumber === 0) {
-      if (!address) return toast.info("Please choose your location");
-    } else if (currentStep.stepNumber === 1) {
-      const isValid = await trigger(["nationality"]);
-      if (!isValid) return;
-    }
-    setCurrentStep(steps[currentStep.stepNumber + 1]);
+    // if (currentStep.stepNumber === 0) {
+    //   if (!address) return toast.info("Please choose your location");
+    // } else if (currentStep.stepNumber === 1) {
+    //   const isValid = await trigger(["nationality"]);
+    //   if (!isValid) return;
+    // }
+    // setCurrentStep(steps[currentStep.stepNumber + 1]);
   };
   return (
     <Modal size="4xl" isOpen={isOpen} onClose={onClose}>
