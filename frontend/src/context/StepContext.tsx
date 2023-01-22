@@ -11,6 +11,8 @@ export interface Step {
     enabled: boolean;
     iconName: string;
     label: string;
+    showSidebar: boolean;
+    showInSidebar: boolean;
 }
 
 const initialSteps: Step[] = [
@@ -20,6 +22,8 @@ const initialSteps: Step[] = [
         component: ChooseMap,
         iconName: "la:plane-arrival",
         label: "Choose Map",
+        showSidebar: false,
+        showInSidebar: false,
     },
     {
         stepNumber: 1,
@@ -27,6 +31,8 @@ const initialSteps: Step[] = [
         component: ChooseDate,
         iconName: "la:plane-arrival",
         label: "Choose Date",
+        showSidebar: false,
+        showInSidebar: true,
     },
     {
         stepNumber: 2,
@@ -34,6 +40,8 @@ const initialSteps: Step[] = [
         component: ChooseActivities,
         iconName: "la:plane-arrival",
         label: "Choose Activities",
+        showSidebar: true,
+        showInSidebar: true,
     },
 ]
 
@@ -49,7 +57,7 @@ const defaultStepContext: IStepContext = {
     steps: initialSteps,
     setSteps: () => { },
     setCurrentStep: () => { },
-    currentStep: initialSteps[1],
+    currentStep: initialSteps[0],
     addStep: (step: Step) => { }
 }
 
@@ -69,10 +77,6 @@ export const StepContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         newSteps.splice(newSteps.length - 1, 0, step);
         setSteps(newSteps);
     }
-
-
-
-
 
 
     return (
