@@ -66,7 +66,7 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
           <Flex>
             {currentStep.stepNumber !== 0 && (
               <VStack
-                p="4"
+                px="4"
                 w="14rem"
                 align="flex-start"
                 divider={
@@ -91,7 +91,7 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                       color={
                         currentStep.stepNumber === step.stepNumber
                           ? "light"
-                          : "black"
+                          : "gray.400"
                       }
                       size="35px"
                       bg={
@@ -99,7 +99,11 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                           ? "primary"
                           : "transparent"
                       }
-                      borderColor={"primary"}
+                      borderColor={
+                        currentStep.stepNumber === step.stepNumber
+                          ? "primary"
+                          : "gray.300"
+                      }
                       borderWidth="1px"
                     >
                       <Icon icon={step.iconName} fontSize={20} />

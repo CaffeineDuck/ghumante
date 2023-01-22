@@ -1,6 +1,4 @@
 import Map from "@/components/global/Map";
-import CulturalSite from "@/components/nearby/TripCard";
-import FoodCard from "@/components/nearby/FoodCard";
 import RestaurantCard from "@/components/nearby/RestaurantCard";
 import useGetDestination from "@/hooks/useGetDestinations";
 import useGetHotels from "@/hooks/useGetHotels";
@@ -16,13 +14,24 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import Destination from "@/components/nearby/DestinationCard";
+import AppContext from "@/context/AppContext";
 
 const NearByPage = () => {
-  const { hotels } = useGetHotels();
   const { trips } = useGetTrips();
-  const { destinations } = useGetDestination();
+  const { coOrdinates, setCoOrdinates } = useContext(AppContext);
+  const { hotels } = useGetHotels({
+    x: coOrdinates.lat,
+    y: coOrdinates.long,
+    range: 50,
+  });
+  const { destinations } = useGetDestination({
+    x: coOrdinates.lat,
+    y: coOrdinates.long,
+    range: 50,
+  });
+
   return (
     <Flex gap="2rem">
       <Box
@@ -52,7 +61,7 @@ const NearByPage = () => {
           <TabPanels mt="1rem">
             <TabPanel px="0">
               <Text as="h3" color="dark" fontSize="1.4rem">
-                All restauants near you
+                All hotels near you
               </Text>
               <SimpleGrid
                 mt="1rem"
@@ -65,6 +74,9 @@ const NearByPage = () => {
                     <RestaurantCard hotel={hotel} key={index} />
                   ))}
               </SimpleGrid>
+              {destinations.length === 0 && (
+                <Text color="gray.600">No hotels found near you</Text>
+              )}
             </TabPanel>
             <TabPanel px="0">
               <Text as="h3" color="dark" fontSize="1.4rem">
@@ -80,6 +92,9 @@ const NearByPage = () => {
                   <Destination destination={destination} key={index} />
                 ))}
               </SimpleGrid>
+              {destinations.length === 0 && (
+                <Text color="gray.600">No trips found near you</Text>
+              )}
             </TabPanel>
             <TabPanel px="0">
               <Text as="h3" color="dark" fontSize="1.4rem">
@@ -95,6 +110,9 @@ const NearByPage = () => {
                   <CulturalSite key={index} />
                 ))} */}
               </SimpleGrid>
+              {destinations.length === 0 && (
+                <Text color="gray.600">No cultural sites found near you</Text>
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -106,6 +124,7 @@ const NearByPage = () => {
           width="100%"
           searchReadOnly={false}
           askCurrentLocation={true}
+          setCoOrdinates={setCoOrdinates}
         />
       </Box>
     </Flex>
