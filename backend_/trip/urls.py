@@ -2,7 +2,7 @@ from rest_framework import routers
 
 from trip.views import DestinationView, HotelView, LocalTripView
 
-router = routers.DefaultRouter()
+router = routers.DefaultRouter(trailing_slash=False)
 
 
 router.register("localtrip", LocalTripView, basename="localtrip")
