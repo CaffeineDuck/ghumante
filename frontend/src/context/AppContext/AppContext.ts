@@ -11,6 +11,8 @@ const AppContext = createContext<AppContextProps>({
     long: 0,
   },
   setCoOrdinates: () => {},
+  address: "",
+  setAddress: () => {},
 });
 
 export default AppContext;
