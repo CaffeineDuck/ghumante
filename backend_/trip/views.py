@@ -71,8 +71,8 @@ class HotelView(ModelViewSet):
         """
         if no query parms are provided then every row is returned \n
             query_parms:
-                x_cord : float
-                y_cord : float
+                x : float
+                y : float
                 range : float (in km)
         """
         if not request.GET.dict():
@@ -80,7 +80,7 @@ class HotelView(ModelViewSet):
             return Response(data=serializer.data, status=200)
         serializer = CoordinateSerializer(data=request.GET.dict())
         if serializer.is_valid():
-            point = Point(*serializer.data.values())
+            point = Point(serializer.data["x"], serializer.data["y"])
             query_set = Hotel.objects.filter(
                 geolocation__distance_lte=(point, D(km=serializer.data["range"]))
             )
@@ -106,22 +106,29 @@ class DestinationView(ModelViewSet):
         """
         if no query parms are provided then every row is returned \n
             query_parms:
-                x_cord : float
-                y_cord : float
+                x : float
+                y : float
                 range : float (in km)
+                category: int (id of category)
         """
         if not request.GET.dict():
+            self.queryset = self.queryset.all()
+            if "category" in request.GET.dict():
+                self.queryset = self.queryset.filter(
+                    category=request.GET.dict()["category"]
+                )
             serializer = DestinationSerializer(self.queryset, many=True)
             return Response(data=serializer.data, status=200)
-
         serializer = CoordinateSerializer(data=request.GET.dict())
         if serializer.is_valid():
-            point = Point(*serializer.data.values())
+            point = Point(x=serializer.data["x"], y=serializer.data["y"])
             query_set = Destination.objects.filter(
                 geolocation__distance_lte=(point, D(km=serializer.data["range"]))
             )
-            hotel_serializer = HotelSerializer(query_set, many=True)
-            return Response(status=200, data=hotel_serializer.data)
+            if "category" in request.GET.dict():
+                query_set = query_set.filter(category=request.GET.dict()["category"])
+            destination_serializer = DestinationSerializer(query_set, many=True)
+            return Response(status=200, data=destination_serializer.data)
 
         else:
             return Response(serializer.errors, status=200)
