@@ -4,13 +4,6 @@ from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from .models import Destination, Hotel, LocalTrip, DestinationCategory
 
 
-class DestinationSerializer(GeoFeatureModelSerializer):
-    class Meta:
-        model = Destination
-        geo_field = "geolocation"
-        fields = "__all__"
-
-
 class HotelSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Hotel
@@ -39,4 +32,11 @@ class CoordinateSerializer(serializers.Serializer):
 class DestinationCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = DestinationCategory
+        fields = "__all__"
+
+
+class DestinationSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = Destination
+        geo_field = "geolocation"
         fields = "__all__"

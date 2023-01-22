@@ -87,14 +87,14 @@ class GoogleMapsSeederClient:
                         "coordinates": [result["longitude"], result["latitude"]],
                     }
                 ),
-                "details": f"Description for {result['name']}",
+                "description": f"Description for {result['name']}",
                 "location_name": result["address"],
                 "room_available": True,
                 "category": 1,
             }
 
             response = requests.post(
-                "http://localhost:8000/api/destination/",
+                "http://localhost:8000/api/destination",
                 data=request_json,
                 files={"photo": open(image_name_normalized, "rb")},
             )

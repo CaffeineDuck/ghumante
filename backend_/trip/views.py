@@ -75,12 +75,13 @@ class HotelView(ModelViewSet):
                 y : float
                 range : float (in km)
         """
+
         if not request.GET.dict():
             serializer = HotelSerializer(self.queryset, many=True)
             return Response(data=serializer.data, status=200)
         serializer = CoordinateSerializer(data=request.GET.dict())
         if serializer.is_valid():
-            point = Point(serializer.data["x"], serializer.data["y"])
+            point = Point(serializer.data["y"], serializer.data["x"])
             query_set = Hotel.objects.filter(
                 geolocation__distance_lte=(point, D(km=serializer.data["range"]))
             )
@@ -111,6 +112,7 @@ class DestinationView(ModelViewSet):
                 range : float (in km)
                 category: int (id of category)
         """
+        print(request.GET.dict())
         if not request.GET.dict():
             self.queryset = self.queryset.all()
             if "category" in request.GET.dict():
@@ -121,7 +123,7 @@ class DestinationView(ModelViewSet):
             return Response(data=serializer.data, status=200)
         serializer = CoordinateSerializer(data=request.GET.dict())
         if serializer.is_valid():
-            point = Point(x=serializer.data["x"], y=serializer.data["y"])
+            point = Point(x=serializer.data["y"], y=serializer.data["x"])
             query_set = Destination.objects.filter(
                 geolocation__distance_lte=(point, D(km=serializer.data["range"]))
             )
