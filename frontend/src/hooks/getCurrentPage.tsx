@@ -3,12 +3,16 @@ import React, { useState } from 'react';
 interface Step {
     stepNumber: number;
     component: React.ReactNode;
+    enabled: boolean;
+    iconName: string;
 }
 
 const initialSteps: Step[] = [
     {
         stepNumber: 0,
-        component: <h1>Hello World</h1>
+        enabled: true,
+        component: <h1>Hello World</h1>,
+        iconName: "la:plane-arrival"
 
 
     }
