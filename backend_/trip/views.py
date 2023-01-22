@@ -14,6 +14,7 @@ from .serializers import (
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.gis.measure import D
+from .paginations import CustomPagination
 
 
 class LocalTripView(ModelViewSet):
@@ -66,6 +67,7 @@ class HotelView(ModelViewSet):
     schema = AutoSchema(tags=["hotel"])
     queryset = Hotel.objects.all()
     serializer_class = HotelSerializer
+    pagination_class = CustomPagination
 
     def list(self, request):
         """
@@ -102,6 +104,7 @@ class DestinationView(ModelViewSet):
     schema = AutoSchema(tags=["destination"])
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
+    pagination_class = CustomPagination
 
     def list(self, request):
         """
@@ -112,7 +115,6 @@ class DestinationView(ModelViewSet):
                 range : float (in km)
                 category: int (id of category)
         """
-        print(request.GET.dict())
         if not request.GET.dict():
             self.queryset = self.queryset.all()
             if "category" in request.GET.dict():
