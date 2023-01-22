@@ -1,11 +1,12 @@
 import { axiosInstance } from "@/utils/axiosInstance";
 import React, { useEffect, useState } from "react";
 
-const useGetDestination = () => {
+const useGetDestination = (params: IParams) => {
   const [destinations, setDestinations] = useState<DestinationInterface[]>([]);
   const fetchDestination = async () => {
+    // if (params.x === 0 || params.y === 0) return;
     try {
-      const response = await axiosInstance.get("/api/destination");
+      const response = await axiosInstance.get(`/api/destination`, { params });
       const mappedData = response.data?.features?.map(
         (item: CommonObjectResponse) => ({
           id: item.id,
@@ -18,7 +19,8 @@ const useGetDestination = () => {
   };
   useEffect(() => {
     fetchDestination();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.x, params.y]);
   return { destinations };
 };
 

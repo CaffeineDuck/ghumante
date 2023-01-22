@@ -48,8 +48,8 @@ const Map: React.FC<MapProps> = ({
   const [libraries] = useState<any>(["places"]);
   const toast = useToast();
   const [center, setCenter] = useState<any>({
-    lat: 27.672506,
-    lng: 85.325124,
+    lat: 0,
+    lng: 0,
   });
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,
@@ -148,7 +148,7 @@ const Map: React.FC<MapProps> = ({
     const res = await getAddressFromGeocode(e.latLng.lat(), e.latLng.lng());
     if (res) {
       setValue(res?.results[0]?.formatted_address, false);
-      setAddress(res?.results[0]?.formatted_address);
+      setAddress && setAddress(res?.results[0]?.formatted_address);
       clearSuggestions();
     }
 
@@ -180,7 +180,7 @@ const Map: React.FC<MapProps> = ({
 
   const handleSelect = (val: any): void => {
     setValue(val, false);
-    setAddress(val);
+    setAddress && setAddress(val);
     getGeocode({ address: val })
       .then((results) => {
         return getLatLng(results[0]);

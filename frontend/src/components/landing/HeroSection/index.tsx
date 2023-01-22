@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
-import LocationPicker from "@/components/global/LocationPicker";
 import PlanTripModal from "@/components/global/PlanTripModal";
 import { FormProvider, useForm } from "react-hook-form";
 
