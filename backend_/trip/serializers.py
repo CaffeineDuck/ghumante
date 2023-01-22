@@ -1,8 +1,7 @@
-from django.contrib.gis.geos import Point
 from rest_framework.authtoken.serializers import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
-from .models import Destination, Hotel, LocalTrip
+from .models import Destination, Hotel, LocalTrip, DestinationCategory
 
 
 class DestinationSerializer(GeoFeatureModelSerializer):
@@ -30,3 +29,9 @@ class CoordinateSerializer(serializers.Serializer):
     x_cord = serializers.FloatField(required=False)
     y_cord = serializers.FloatField(required=False)
     range = serializers.FloatField(required=False)
+
+
+class DestinationCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DestinationCategory
+        fields = "__all__"
