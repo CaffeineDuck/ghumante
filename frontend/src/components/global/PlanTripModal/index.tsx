@@ -12,26 +12,35 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useSteps } from "chakra-ui-steps";
 import Map from "../Map";
 import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import ChooseDate from "../ChooseDate";
 import { Icon } from "@iconify/react";
+import AppContext from "@/context/AppContext";
+import useCustomToast from "@/hooks/useCustomToast";
+import ChooseMap from "./ChooseMap";
 interface PlanTripModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
+  const toast = useCustomToast();
   const { nextStep, prevStep, setStep, activeStep } = useSteps({
     initialStep: 0,
   });
+  const [isMapChoosed, setIsMapChoosed] = useState<boolean>(false);
   const method = useForm({ mode: "all" });
   const { handleSubmit } = method;
-  const [address, setAddress] = useState<string>("");
+  const { coOrdinates, setCoOrdinates, address, setAddress } =
+    useContext(AppContext);
   const onSubmit = async (values: FieldValues) => {};
+
   const renderCorrectContent = () => {
+    if (!address || !isMapChoosed)
+      return <ChooseMap handleContinue={() => setIsMapChoosed(true)} />;
     if (activeStep === 0)
       return (
         <Box border="1">
@@ -40,6 +49,7 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
             searchBoxFromTop="5px"
             height="400px"
             width="100%"
+            setCoOrdinates={setCoOrdinates}
             setAddress={setAddress}
           />
           <Flex justify="end" mt="4rem">
@@ -76,48 +86,50 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
           py="2rem"
         >
           <Flex>
-            <VStack
-              p="4"
-              w="14rem"
-              align="flex-start"
-              divider={
-                <Box
-                  h="2.25rem"
-                  w="1.42px"
-                  bg="gray.500"
-                  position="relative"
-                  left="15px"
-                />
-              }
-            >
-              {["Map", "Choose Date", "Confirm"].map((item, index) => (
-                <Flex
-                  key={index}
-                  align="center"
-                  onClick={() => setStep(index)}
-                  cursor="pointer"
-                  gap={{ base: "1.5rem", md: "1.82rem" }}
-                >
-                  <Circle
-                    color={activeStep === index ? "light" : "black"}
-                    size="30px"
-                    bg={activeStep === index ? "primary" : "transparent"}
-                    borderColor={"primary"}
-                    borderWidth="1px"
+            {isMapChoosed && address && (
+              <VStack
+                p="4"
+                w="14rem"
+                align="flex-start"
+                divider={
+                  <Box
+                    h="2.25rem"
+                    w="1.42px"
+                    bg="gray.500"
+                    position="relative"
+                    left="15px"
+                  />
+                }
+              >
+                {["Map", "Choose Date", "Confirm"].map((item, index) => (
+                  <Flex
+                    key={index}
+                    align="center"
+                    onClick={() => setStep(index)}
+                    cursor="pointer"
+                    gap={{ base: "1.5rem", md: "1.82rem" }}
                   >
-                    {index + 1}
-                  </Circle>
-                  <Text
-                    whiteSpace="nowrap"
-                    fontWeight="medium"
-                    color={activeStep === index ? "primary" : "gray.500"}
-                    fontSize="1.1rem"
-                  >
-                    {item}
-                  </Text>
-                </Flex>
-              ))}
-            </VStack>
+                    <Circle
+                      color={activeStep === index ? "light" : "black"}
+                      size="30px"
+                      bg={activeStep === index ? "primary" : "transparent"}
+                      borderColor={"primary"}
+                      borderWidth="1px"
+                    >
+                      {index + 1}
+                    </Circle>
+                    <Text
+                      whiteSpace="nowrap"
+                      fontWeight="medium"
+                      color={activeStep === index ? "primary" : "gray.500"}
+                      fontSize="1.1rem"
+                    >
+                      {item}
+                    </Text>
+                  </Flex>
+                ))}
+              </VStack>
+            )}
             <Box flex="1">
               <FormProvider {...method}>
                 <form onSubmit={handleSubmit(onSubmit)}>

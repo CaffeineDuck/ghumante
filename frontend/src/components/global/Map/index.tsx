@@ -18,13 +18,7 @@ import {
   InputRightElement,
   ListItem,
 } from "@chakra-ui/react";
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from "@reach/combobox";
+import { Combobox, ComboboxInput, ComboboxList } from "@reach/combobox";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
@@ -39,6 +33,7 @@ export type MapProps = {
   searchReadOnly?: boolean;
   setAddress?: any;
   askCurrentLocation?: boolean;
+  setCoOrdinates?: (coOrdinates: CoOrdinateInterface) => void;
 };
 const Map: React.FC<MapProps> = ({
   height,
@@ -47,6 +42,7 @@ const Map: React.FC<MapProps> = ({
   searchReadOnly,
   setAddress,
   askCurrentLocation,
+  setCoOrdinates,
 }) => {
   const [marker, setMarker] = useState<any>({});
   const [libraries] = useState<any>(["places"]);
@@ -78,10 +74,11 @@ const Map: React.FC<MapProps> = ({
             lng,
             time: new Date(),
           });
-          console.log(lat, lng);
+          setCoOrdinates && setCoOrdinates({ lat, long: lng });
           const res = await getAddressFromGeocode(lat, lng);
           if (res) {
             setValue(res?.results[0]?.formatted_address, false);
+            setAddress && setAddress(res?.results[0]?.formatted_address);
             clearSuggestions();
           }
         },
@@ -129,7 +126,15 @@ const Map: React.FC<MapProps> = ({
     suggestions: { status, data },
     setValue,
     clearSuggestions,
-  } = usePlacesAutocomplete({ debounce: 300, initOnMount: false });
+  } = usePlacesAutocomplete({
+    debounce: 300,
+    initOnMount: false,
+    requestOptions: {
+      componentRestrictions: {
+        country: "np",
+      },
+    },
+  });
   const onMapLoad = useCallback((map: any) => {
     mapRef.current = map;
     init();
@@ -138,9 +143,12 @@ const Map: React.FC<MapProps> = ({
   const handleClick = useCallback(async (e: any) => {
     // setCenter({ lat: e.latLng.lat(), lng: e.latLng.lng() });
     setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng(), time: new Date() });
+    setCoOrdinates &&
+      setCoOrdinates({ lat: e.latLng.lat(), long: e.latLng.lng() });
     const res = await getAddressFromGeocode(e.latLng.lat(), e.latLng.lng());
     if (res) {
       setValue(res?.results[0]?.formatted_address, false);
+      setAddress(res?.results[0]?.formatted_address);
       clearSuggestions();
     }
 
@@ -172,6 +180,7 @@ const Map: React.FC<MapProps> = ({
 
   const handleSelect = (val: any): void => {
     setValue(val, false);
+    setAddress(val);
     getGeocode({ address: val })
       .then((results) => {
         return getLatLng(results[0]);
@@ -179,6 +188,7 @@ const Map: React.FC<MapProps> = ({
       .then(({ lat, lng }) => {
         setCenter({ lat, lng });
         setMarker({ lat, lng, time: new Date() });
+        setCoOrdinates && setCoOrdinates({ lat, long: lng });
       })
       .catch((error) => {
         toast({

@@ -4,9 +4,12 @@ import Navbar from "@/components/global/Navbar";
 import Footer from "../Footer";
 import AppContext from "@/context/AppContext";
 import useGetCurrentUser from "@/hooks/useGetCurrentUser";
-const DefaultLayout = ({ children }) => {
+const DefaultLayout: React.FC<{ children?: React.ReactNode }> = ({
+  children,
+}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [address, setAddress] = useState<string>("");
   const [coOrdinates, setCoOrdinates] = useState({ lat: 0, long: 0 });
 
   const { user } = useGetCurrentUser();
@@ -28,6 +31,8 @@ const DefaultLayout = ({ children }) => {
         setProfile,
         coOrdinates,
         setCoOrdinates,
+        address,
+        setAddress,
       }}
     >
       <Box w="full" minH="100vh" display="flex" flexDir="column">

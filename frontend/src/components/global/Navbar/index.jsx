@@ -122,8 +122,8 @@ export default function Navbar() {
           <Link href="/" color={"gray.800"} _hover={{ color: "primary" }}>
             <Image
               layout="fixed"
-              height={65}
-              width={65}
+              height={50}
+              width={50}
               src="/logo.svg"
               alt=""
             />
