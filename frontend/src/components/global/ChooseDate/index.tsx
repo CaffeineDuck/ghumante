@@ -16,8 +16,12 @@ import "react-daterange-picker/dist/css/react-calendar.css";
 import originalMoment from "moment";
 import { extendMoment } from "moment-range";
 import { Icon } from "@iconify/react";
+import StepFooter from "../ContinueButton";
+import { useStepContext } from "@/context/StepContext";
 const moment = extendMoment(originalMoment as any);
 const ChooseDate: React.FC = () => {
+  const { gotoNextPage, setArrivalDateTime, setDepartureDateTime } =
+    useStepContext();
   const today = moment();
   const [calendar, setCalender] = useState({
     dates: null,
@@ -145,6 +149,17 @@ const ChooseDate: React.FC = () => {
           />
         )}
       </Box>
+      <StepFooter
+        onContinue={() => {
+          let startDateTime = calendar.start;
+          let endDateTime = calendar.end;
+
+          setArrivalDateTime(startDateTime);
+          setDepartureDateTime(endDateTime);
+
+          gotoNextPage();
+        }}
+      />
     </Box>
   );
 };

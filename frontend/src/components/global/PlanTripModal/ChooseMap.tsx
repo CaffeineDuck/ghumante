@@ -1,10 +1,14 @@
 import AppContext from "@/context/AppContext";
+import { useStepContext } from "@/context/StepContext";
 import { Box, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
+import StepFooter from "../ContinueButton";
 import Map from "../Map";
 
 const ChooseMap: React.FC = () => {
   const { setCoOrdinates, setAddress } = useContext(AppContext);
+
+  const { gotoNextPage } = useStepContext();
 
   return (
     <Box>
@@ -18,6 +22,11 @@ const ChooseMap: React.FC = () => {
         width="100%"
         setCoOrdinates={setCoOrdinates}
         setAddress={setAddress}
+      />
+      <StepFooter
+        onContinue={() => {
+          gotoNextPage();
+        }}
       />
     </Box>
   );

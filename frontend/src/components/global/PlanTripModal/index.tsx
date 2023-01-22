@@ -12,7 +12,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -34,11 +34,17 @@ interface PlanTripModalProps {
 const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
   const toast = useCustomToast();
 
-  const { steps, currentStep, setCurrentStep } = useStepContext();
+  const {
+    steps,
+    currentStep,
+    setCurrentStep,
+    arrivalDateTime,
+    departureDateTime,
+  } = useStepContext();
 
   const { handleSubmit, trigger } = useFormContext();
   const { address } = useContext(AppContext);
-  const onSubmit = async (values: FieldValues) => { };
+  const onSubmit = async (values: FieldValues) => {};
   // const { currentStep, setCurrentStep, setSteps, steps } = useCurrentStep();
   const handleContinue = async () => {
     // if (currentStep.stepNumber === 0) {
@@ -49,7 +55,16 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
     // }
     // setCurrentStep(steps[currentStep.stepNumber + 1]);
   };
+
+  useEffect(() => {
+
+  return () => {
+  console.log("Unmounted.")
+  }
+
+  }, [])
   return (
+
     <Modal size="4xl" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
@@ -60,14 +75,11 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
         />
         <ModalBody
           transition="200ms linear"
-          minH="500px"
           px={{ base: "10px", md: "16px", lg: "24px" }}
           py="2rem"
         >
-          <Flex>
-
-
-            {currentStep.showSidebar && steps.map((step, index) => (
+          <Flex gap={{ base: "1.5rem" }} align="center" justify="center">
+            {currentStep.showSidebar && (
               <VStack
                 px="4"
                 w="14rem"
@@ -82,45 +94,79 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                   />
                 }
               >
-                {steps.map((step, index) => (
+                {arrivalDateTime && (
+                  <Flex align="center" gap={{ base: "1.5rem", md: "1.82rem" }}>
+                    <ColorChangingCircle
+                      currentStepNumber={0}
+                      stepNumber={1}
+                      iconName={"material-symbols:timer"}
+                    />
 
-                  step.showInSidebar &&
-                  <Flex
-                    key={index}
-                    align="center"
-                    onClick={() => setCurrentStep(step)}
-                    cursor="pointer"
-                    gap={{ base: "1.5rem", md: "1.82rem" }}
-                  >
-
-                    <ColorChangingCircle currentStepNumber={currentStep.stepNumber} stepNumber={step.stepNumber} iconName={step.iconName} />
-                    
                     <Text
                       whiteSpace="nowrap"
                       fontWeight="medium"
-                      color={
-                        currentStep.stepNumber === step.stepNumber
-                          ? "primary"
-                          : "gray.500"
-                      }
+                      color={"primary"}
                       fontSize="1.1rem"
                     >
-                      {step.label}
+                      {arrivalDateTime}
                     </Text>
                   </Flex>
-                ))}
+                )}
+                {steps.map((step) => {
+                  return (
+                    step.showInSidebar && (
+                      <Flex
+                        key={step.label}
+                        align="center"
+                        onClick={() => setCurrentStep(step)}
+                        cursor="pointer"
+                        gap={{ base: "1.5rem", md: "1.82rem" }}
+                      >
+                        <ColorChangingCircle
+                          currentStepNumber={currentStep.stepNumber}
+                          stepNumber={step.stepNumber}
+                          iconName={step.iconName}
+                        />
+
+                        <Text
+                          whiteSpace="nowrap"
+                          fontWeight="medium"
+                          color={
+                            currentStep.stepNumber === step.stepNumber
+                              ? "primary"
+                              : "gray.500"
+                          }
+                          fontSize="1.1rem"
+                        >
+                          {step.label}
+                        </Text>
+                      </Flex>
+                    )
+                  );
+                })}
+                {departureDateTime && (
+                  <Flex align="center" gap={{ base: "1.5rem", md: "1.82rem" }}>
+                    <ColorChangingCircle
+                      currentStepNumber={0}
+                      stepNumber={1}
+                      iconName={"material-symbols:timer"}
+                    />
+
+                    <Text
+                      whiteSpace="nowrap"
+                      fontWeight="medium"
+                      color={"primary"}
+                      fontSize="1.1rem"
+                    >
+                      {departureDateTime}
+                    </Text>
+                  </Flex>
+                )}
               </VStack>
+            )}
 
-            ))}
-
-
-            {/* {currentStep.stepNumber !== 0 && (
-            )} */}
             <Box flex="1">
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <currentStep.component />
-                <StepFooter onContinue={handleContinue} />
-              </form>
+              <currentStep.component />
             </Box>
           </Flex>
         </ModalBody>

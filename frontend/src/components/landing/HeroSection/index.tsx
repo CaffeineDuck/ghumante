@@ -16,9 +16,22 @@ import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
 import PlanTripModal from "@/components/global/PlanTripModal";
 import { FormProvider, useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useStepContext } from "@/context/StepContext";
 
 export default function HeroSection() {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { setCurrentStep, steps, setArrivalDateTime, setDepartureDateTime } =
+    useStepContext();
+
+  useEffect(() => {
+    if (!isOpen) {
+      setCurrentStep(steps[0]);
+      setArrivalDateTime(null);
+      setDepartureDateTime(null);
+    }
+  }, [isOpen]);
+
   const router = useRouter();
   const method = useForm({ mode: "all" });
   return (
