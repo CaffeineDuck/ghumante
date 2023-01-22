@@ -2,6 +2,7 @@ import { mapUrl } from "@/utils/mapUrl";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const DestinationCard: React.FC<{ destination: DestinationInterface }> = ({
@@ -9,6 +10,8 @@ const DestinationCard: React.FC<{ destination: DestinationInterface }> = ({
 }) => {
   return (
     <Box
+      as={Link}
+      href={`/nearby/destination-${destination.id}`}
       cursor="pointer"
       role="group"
       borderRadius="lg"

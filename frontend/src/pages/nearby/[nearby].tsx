@@ -1,6 +1,13 @@
 import ImageCarousel from "@/components/global/ImageCarousel";
 import Rating from "@/components/global/Rating";
 import {
+  GetStaticProps,
+  GetStaticPaths,
+  GetStaticPathsContext,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+} from "next";
+import {
   Box,
   Button,
   Container,
@@ -20,12 +27,16 @@ import {
 import { Icon } from "@iconify/react";
 import Head from "next/head";
 import React from "react";
+import useGetByCategoryAndID from "@/hooks/useGetByCategoryAndID";
 
-const SingleNearByPage = () => {
+const SingleNearByPage: React.FC<
+  InferGetStaticPropsType<typeof getStaticProps>
+> = ({ id, category }) => {
+  const { item } = useGetByCategoryAndID({ id, category });
   return (
     <Box>
       <Head>
-        <title>Mattai Restaurant</title>
+        <title>{item?.name}</title>
         <meta name="description" content="Single Product Title." />
       </Head>
 
@@ -45,47 +56,31 @@ const SingleNearByPage = () => {
               mt={4}
               height="min-content"
             >
-              <ImageCarousel
-                images={[
-                  "https://img.olx.com.br/images/50/509193481673478.jpg",
-                  "https://img.olx.com.br/images/50/505167365537533.jpg",
-                  "https://img.olx.com.br/images/50/501177121104088.jpg",
-                  "https://img.olx.com.br/images/50/504102247685480.jpg",
-                  "https://img.olx.com.br/images/50/500120243101489.jpg",
-                ]}
-              />
+              <ImageCarousel images={Array(5).fill(item?.photo || "")} />
             </Stack>
             <Stack pt={[4, 4, 0]}>
               <Flex align="center"></Flex>
               <Text as="h2" fontSize={["xl", "xl", "2xl"]} fontWeight="600">
-                Beautiful house in Kathmandu
+                {item?.name}
               </Text>
 
               <Flex justify="space-between">
                 <Flex align="center">
                   <Rating rating={3.5} />
-                  <Text fontSize={["xs", "sm"]} ml={1}>
+                  {/* <Text fontSize={["xs", "sm"]} ml={1}>
                     61 reviews
-                  </Text>
+                  </Text> */}
                 </Flex>
                 <Text fontSize="sm" as="span" mt={0}>
-                  Posted on 11/2018
+                  {item?.created_at &&
+                    new Date(item.created_at).toLocaleDateString()}
                 </Text>
               </Flex>
 
-              <Heading size="lg" fontWeight="500">
-                Rs 160
-              </Heading>
               <Heading size="sm" pt={2}>
                 Description
               </Heading>
-              <Text fontSize={["sm", "md"]}>
-                House consisting of 2 bedrooms, living room, kitchen and
-                bathroom, large area in front, two aedicule in the back with
-                bathroom and garden. For just 140 thousand and take the rest of
-                the installments that are 497 declining. I accept automatic car
-                as part of the deal. Whatsapp68992039107
-              </Text>
+              <Text fontSize={["sm", "md"]}>{item?.description}</Text>
 
               <Heading size="sm" pt={2}>
                 Share
@@ -120,7 +115,7 @@ const SingleNearByPage = () => {
                 </Tbody>
               </Table>
 
-              <Heading size="sm" pt={2}>
+              {/* <Heading size="sm" pt={2}>
                 Delivery and Wrarranty Details
               </Heading>
               <Table>
@@ -139,16 +134,16 @@ const SingleNearByPage = () => {
                 <Button w="full" variant="solid" ml={1}>
                   <Icon icon="material-symbols:call" /> Call Now
                 </Button>
-              </HStack>
+              </HStack> */}
             </Stack>
           </Grid>
 
-          <Stack my={4}>
+          {/* <Stack my={4}>
             <Flex justify="space-between" align="center">
               <Heading size="md"> Similar Ads</Heading>
               <Text>View All</Text>
             </Flex>
-          </Stack>
+          </Stack> */}
         </Container>
       </Box>
     </Box>
@@ -165,3 +160,25 @@ function TableRow({ label, value }: any) {
     </Tr>
   );
 }
+
+export const getStaticPaths: GetStaticPaths = async (
+  context: GetStaticPathsContext
+) => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (
+  context: GetStaticPropsContext
+) => {
+  const { nearby }: any = context.params;
+  const [category, id] = nearby.split("-");
+  return {
+    props: {
+      category,
+      id,
+    },
+  };
+};

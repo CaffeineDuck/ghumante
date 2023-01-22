@@ -1,6 +1,6 @@
 import Map from "@/components/global/Map";
 import RestaurantCard from "@/components/nearby/RestaurantCard";
-import useGetDestination from "@/hooks/useGetDestinations";
+import useGetDestinations from "@/hooks/useGetDestinations";
 import useGetHotels from "@/hooks/useGetHotels";
 import useGetTrips from "@/hooks/useGetTrips";
 import {
@@ -14,24 +14,41 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Destination from "@/components/nearby/DestinationCard";
 import AppContext from "@/context/AppContext";
 
 const NearByPage = () => {
-  const { trips } = useGetTrips();
+  // const { trips } = useGetTrips()
   const { coOrdinates, setCoOrdinates } = useContext(AppContext);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [markers, setMarkers] = useState<CoOrdinateInterface[]>([]);
   const { hotels } = useGetHotels({
     x: coOrdinates.lat,
     y: coOrdinates.long,
     range: 50,
   });
-  const { destinations } = useGetDestination({
+  const { destinations } = useGetDestinations({
     x: coOrdinates.lat,
     y: coOrdinates.long,
     range: 50,
   });
-
+  useEffect(() => {
+    let newMarkers: CoOrdinateInterface[] = [];
+    if (activeIndex === 0) {
+      newMarkers = hotels?.map((hotel) => ({
+        lat: hotel.geolocation?.coordinates[0],
+        long: hotel.geolocation?.coordinates[1],
+      })) as CoOrdinateInterface[];
+    } else if (activeIndex === 1) {
+      newMarkers = destinations?.map((destination) => ({
+        lat: destination.geometry?.coordinates[0],
+        long: destination.geometry.coordinates[1],
+      })) as CoOrdinateInterface[];
+    }
+    setMarkers(newMarkers);
+  }, [destinations, hotels, activeIndex]);
+  console.log(markers);
   return (
     <Flex gap="2rem">
       <Box
@@ -45,7 +62,7 @@ const NearByPage = () => {
           },
         }}
       >
-        <Tabs>
+        <Tabs onChange={setActiveIndex} index={activeIndex}>
           <TabList position="sticky" zIndex={5} top="0rem" bg="bgColor">
             {["Hotels", "Local Trip"].map((item) => (
               <Tab
@@ -122,9 +139,11 @@ const NearByPage = () => {
           searchBoxFromTop="2rem"
           height="80vh"
           width="100%"
-          searchReadOnly={false}
+          searchReadOnly={true}
           askCurrentLocation={true}
           setCoOrdinates={setCoOrdinates}
+          disableClick={true}
+          // markers={markers}
         />
       </Box>
     </Flex>

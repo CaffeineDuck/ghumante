@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/router";
 import OTPInput from "@/components/global/FormElements/OTPInput";
 import { axiosInstance } from "@/utils/axiosInstance";
+import { setStorage } from "@/utils/storage";
 const LoginPage = () => {
   const router = useRouter();
   const method = useForm({ mode: "all" });
@@ -33,7 +34,7 @@ const LoginPage = () => {
         code,
         confirmationResult
       );
-      const response = await axiosInstance.post(
+      const response: any = await axiosInstance.post(
         "/auth/login",
         { token },
         {
@@ -42,7 +43,7 @@ const LoginPage = () => {
           },
         }
       );
-      console.log(response);
+      setStorage("X-Access-Token", response?.token);
     } catch (e) {
     } finally {
     }

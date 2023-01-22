@@ -29,7 +29,7 @@ function Rating({ rating = 0 }) {
           } else {
             return (
               <Icon
-                icon="material-symbols:star"
+                icon="material-symbols:star-outline"
                 key={index}
                 style={{ margin: "2px", color: "yellow.400" }}
               />

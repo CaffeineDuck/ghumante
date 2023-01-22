@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/utils/axiosInstance";
 import React, { useEffect, useState } from "react";
 
-const useGetDestination = (params: IParams) => {
+const useGetDestinations = (params: IParams) => {
   const [destinations, setDestinations] = useState<DestinationInterface[]>([]);
   const fetchDestination = async () => {
     // if (params.x === 0 || params.y === 0) return;
@@ -24,4 +24,4 @@ const useGetDestination = (params: IParams) => {
   return { destinations };
 };
 
-export default useGetDestination;
+export default useGetDestinations;

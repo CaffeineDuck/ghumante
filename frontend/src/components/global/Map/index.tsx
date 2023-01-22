@@ -34,6 +34,8 @@ export type MapProps = {
   setAddress?: any;
   askCurrentLocation?: boolean;
   setCoOrdinates?: (coOrdinates: CoOrdinateInterface) => void;
+  disableClick?: boolean;
+  markers?: CoOrdinateInterface[];
 };
 const Map: React.FC<MapProps> = ({
   height,
@@ -43,6 +45,8 @@ const Map: React.FC<MapProps> = ({
   setAddress,
   askCurrentLocation,
   setCoOrdinates,
+  disableClick = false,
+  markers,
 }) => {
   const [marker, setMarker] = useState<any>({});
   const [libraries] = useState<any>(["places"]);
@@ -141,6 +145,7 @@ const Map: React.FC<MapProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleClick = useCallback(async (e: any) => {
+    if (disableClick) return;
     // setCenter({ lat: e.latLng.lat(), lng: e.latLng.lng() });
     setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng(), time: new Date() });
     setCoOrdinates &&
@@ -250,6 +255,18 @@ const Map: React.FC<MapProps> = ({
       {marker?.lng && marker?.lat && (
         <Marker position={{ lat: marker?.lat, lng: marker.lng }} />
       )}
+      {markers &&
+        markers?.map((marker: CoOrdinateInterface, index: number) => (
+          <Marker
+            position={{ lat: marker?.lat, lng: marker.long }}
+            key={index}
+            icon={{
+              url: "https://cdn.mindbowser.com/custom_marker_pin.svg",
+              anchor: new google.maps.Point(17, 46),
+              scaledSize: new google.maps.Size(37, 37),
+            }}
+          />
+        ))}
       <Box
         h="fit-content"
         w="full"
