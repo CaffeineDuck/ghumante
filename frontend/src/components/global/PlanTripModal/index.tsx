@@ -13,15 +13,17 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
-import { useSteps } from "chakra-ui-steps";
-import Map from "../Map";
-import { FieldValues, FormProvider, useForm } from "react-hook-form";
-import ChooseDate from "../ChooseDate";
-import { Icon } from "@iconify/react";
+import {
+  FieldValues,
+  FormProvider,
+  useForm,
+  useFormContext,
+} from "react-hook-form";
 import AppContext from "@/context/AppContext";
 import useCustomToast from "@/hooks/useCustomToast";
-import ChooseMap from "./ChooseMap";
 import useCurrentStep from "@/hooks/useCurrentStep";
+import StepFooter from "../ContinueButton";
+import { Icon } from "@iconify/react";
 interface PlanTripModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -29,16 +31,19 @@ interface PlanTripModalProps {
 
 const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
   const toast = useCustomToast();
-  const method = useForm({ mode: "all" });
-  const { handleSubmit } = method;
+
+  const { handleSubmit, trigger } = useFormContext();
   const { address } = useContext(AppContext);
   const onSubmit = async (values: FieldValues) => {};
   const { currentStep, setCurrentStep, setSteps, steps } = useCurrentStep();
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (currentStep.stepNumber === 0) {
       if (!address) return toast.info("Please choose your location");
-      setCurrentStep(steps[currentStep.stepNumber + 1]);
+    } else if (currentStep.stepNumber === 1) {
+      const isValid = await trigger(["nationality"]);
+      if (!isValid) return;
     }
+    setCurrentStep(steps[currentStep.stepNumber + 1]);
   };
   return (
     <Modal size="4xl" isOpen={isOpen} onClose={onClose}>
@@ -71,57 +76,52 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                   />
                 }
               >
-                {["Map", "Choose Date", "Confirm"].map((item, index) => (
+                {steps.slice(1)?.map((step, index) => (
                   <Flex
                     key={index}
                     align="center"
-                    onClick={() => setStep(index)}
+                    onClick={() => setCurrentStep(step)}
                     cursor="pointer"
                     gap={{ base: "1.5rem", md: "1.82rem" }}
                   >
                     <Circle
-                      color={activeStep === index ? "light" : "black"}
-                      size="30px"
-                      bg={activeStep === index ? "primary" : "transparent"}
+                      color={
+                        currentStep.stepNumber === step.stepNumber
+                          ? "light"
+                          : "black"
+                      }
+                      size="35px"
+                      bg={
+                        currentStep.stepNumber === step.stepNumber
+                          ? "primary"
+                          : "transparent"
+                      }
                       borderColor={"primary"}
                       borderWidth="1px"
                     >
-                      {index + 1}
+                      <Icon icon={step.iconName} fontSize={20} />
                     </Circle>
                     <Text
                       whiteSpace="nowrap"
                       fontWeight="medium"
-                      color={activeStep === index ? "primary" : "gray.500"}
+                      color={
+                        currentStep.stepNumber === step.stepNumber
+                          ? "primary"
+                          : "gray.500"
+                      }
                       fontSize="1.1rem"
                     >
-                      {item}
+                      {step.label}
                     </Text>
                   </Flex>
                 ))}
               </VStack>
             )}
             <Box flex="1">
-              <FormProvider {...method}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  {currentStep.component}
-                  <Flex justify="end" mt="4rem">
-                    <Button
-                      variant={"solid"}
-                      colorScheme={"primaryScheme"}
-                      size={"lg"}
-                      onClick={handleContinue}
-                      rightIcon={
-                        <Icon
-                          fontSize={18}
-                          icon="material-symbols:arrow-right-alt"
-                        />
-                      }
-                    >
-                      Continue
-                    </Button>
-                  </Flex>
-                </form>
-              </FormProvider>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <currentStep.component />
+                <StepFooter onContinue={handleContinue} />
+              </form>
             </Box>
           </Flex>
         </ModalBody>

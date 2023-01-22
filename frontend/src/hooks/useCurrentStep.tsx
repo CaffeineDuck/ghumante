@@ -1,37 +1,16 @@
+import ChooseActivities from "@/components/global/ChooseActivities";
+import ChooseDate from "@/components/global/ChooseDate";
 import ChooseMap from "@/components/global/PlanTripModal/ChooseMap";
-import { Flex , Button, Icon} from "@chakra-ui/react";
+import { Flex, Button } from "@chakra-ui/react";
+import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 
 interface Step {
   stepNumber: number;
-  component: React.FC
+  component: React.FC;
   enabled: boolean;
   iconName: string;
   label: string;
-}
-
-
-interface NextPageComponentProps  {
-  handleContinue: () => void;
-}
-
-const NextPageComponent: React.FC<NextPageComponentProps> = ({handleContinue}) => {
-  return (<Flex justify="end" mt="4rem">
-  <Button
-    variant={"solid"}
-    colorScheme={"primaryScheme"}
-    size={"lg"}
-    onClick={handleContinue}
-    rightIcon={
-      <Icon
-        fontSize={18}
-        icon="material-symbols:arrow-right-alt"
-      />
-    }
-  >
-    Continue
-  </Button>
-</Flex>)
 }
 
 const useCurrentStep = () => {
@@ -46,14 +25,14 @@ const useCurrentStep = () => {
     {
       stepNumber: 1,
       enabled: true,
-      component: ChooseMap,
+      component: ChooseDate,
       iconName: "la:plane-arrival",
       label: "Choose Map",
     },
     {
       stepNumber: 2,
       enabled: true,
-      component: ChooseMap,
+      component: ChooseActivities,
       iconName: "la:plane-arrival",
       label: "Choose Map",
     },
@@ -67,7 +46,6 @@ const useCurrentStep = () => {
     setSteps,
     currentStep,
     setCurrentStep,
-    nextPageComponent: NextPageComponent
   };
 };
 export default useCurrentStep;
