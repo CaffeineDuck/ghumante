@@ -15,14 +15,15 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
-from rest_framework.schemas import get_schema_view
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
+from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("core.urls")),
+    path("chatbot", include("chatbot.urls")),
     path(
         "docs",
         TemplateView.as_view(
