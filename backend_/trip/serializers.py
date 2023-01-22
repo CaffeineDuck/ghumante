@@ -31,8 +31,8 @@ class LocalTripSerializer(GeoFeatureModelSerializer):
 
 
 class CoordinateSerializer(serializers.Serializer):
-    x_cord = serializers.FloatField(required=False)
-    y_cord = serializers.FloatField(required=False)
+    x = serializers.FloatField(required=False)
+    y = serializers.FloatField(required=False)
     range = serializers.FloatField(required=False)
 
 
