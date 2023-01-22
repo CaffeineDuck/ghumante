@@ -2,7 +2,7 @@ import AppContext from "@/context/AppContext";
 import { useStepContext } from "@/context/StepContext";
 import { Box, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
-import StepFooter from "../ContinueButton";
+import StepFooter from "../StepFooter";
 import Map from "../Map";
 
 const ChooseMap: React.FC = () => {

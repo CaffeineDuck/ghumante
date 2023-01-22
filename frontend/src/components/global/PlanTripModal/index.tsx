@@ -22,8 +22,6 @@ import {
 import AppContext from "@/context/AppContext";
 import useCustomToast from "@/hooks/useCustomToast";
 //import useCurrentStep from "@/hooks/useCurrentStep";
-import StepFooter from "../ContinueButton";
-import { Icon } from "@iconify/react";
 import { useStepContext } from "@/context/StepContext";
 import { ColorChangingCircle } from "./ColorChangingCircle";
 interface PlanTripModalProps {
@@ -65,7 +63,7 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
   }, [])
   return (
 
-    <Modal size="4xl" isOpen={isOpen} onClose={onClose}>
+    <Modal size="6xl" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader></ModalHeader>
@@ -75,10 +73,11 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
         />
         <ModalBody
           transition="200ms linear"
+          minHeight={"768px"}
           px={{ base: "10px", md: "16px", lg: "24px" }}
           py="2rem"
         >
-          <Flex gap={{ base: "1.5rem" }} align="center" justify="center">
+          <Flex gap={{ base: "1.5rem" }} height="full" align="center" justify="center">
             {currentStep.showSidebar && (
               <VStack
                 px="4"

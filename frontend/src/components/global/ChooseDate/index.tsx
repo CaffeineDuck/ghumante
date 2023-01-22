@@ -16,7 +16,7 @@ import "react-daterange-picker/dist/css/react-calendar.css";
 import originalMoment from "moment";
 import { extendMoment } from "moment-range";
 import { Icon } from "@iconify/react";
-import StepFooter from "../ContinueButton";
+import StepFooter from "../StepFooter";
 import { useStepContext } from "@/context/StepContext";
 const moment = extendMoment(originalMoment as any);
 const ChooseDate: React.FC = () => {
