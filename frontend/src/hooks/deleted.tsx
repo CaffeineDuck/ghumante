@@ -39,7 +39,7 @@ const useCurrentStep = () => {
   ];
   const [steps, setSteps] = useState<Step[]>(initialSteps);
 
-  const [currentStep, setCurrentStep] = useState<Step>(steps[0]);
+  const [currentStep, setCurrentStep] = useState<Step>(steps[1]);
 
   return {
     steps,
