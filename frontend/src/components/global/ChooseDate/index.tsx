@@ -16,16 +16,9 @@ import "react-daterange-picker/dist/css/react-calendar.css";
 import originalMoment from "moment";
 import { extendMoment } from "moment-range";
 import { Icon } from "@iconify/react";
-import { useFormContext } from "react-hook-form";
 const moment = extendMoment(originalMoment as any);
-const ChooseDate: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
+const ChooseDate: React.FC = () => {
   const today = moment();
-  const { trigger } = useFormContext();
-  const handleContinue = async () => {
-    const isValid = await trigger(["nationality"]);
-    if (!isValid) return;
-    onContinue();
-  };
   const [calendar, setCalender] = useState({
     dates: null,
     value: moment.range(
@@ -149,19 +142,6 @@ const ChooseDate: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
             maximumDate={calendar.maximumDate}
           />
         )}
-        <Flex justify="end" mt="4rem">
-          <Button
-            variant={"solid"}
-            colorScheme={"primaryScheme"}
-            size={"lg"}
-            onClick={handleContinue}
-            rightIcon={
-              <Icon fontSize={18} icon="material-symbols:arrow-right-alt" />
-            }
-          >
-            Continue
-          </Button>
-        </Flex>
       </Box>
     </Box>
   );
