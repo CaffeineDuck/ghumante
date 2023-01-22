@@ -8,7 +8,6 @@ from .serializers import (
     LocalTripSerializer,
     CoordinateSerializer,
 )
-import math
 from rest_framework.response import Response
 from django.contrib.gis.measure import D
 
@@ -25,6 +24,12 @@ class HotelView(ModelViewSet):
     serializer_class = HotelSerializer
 
     def list(self, request):
+        """
+        if no query parms are provided then every row is returned \n
+            query_parms:
+                x_cord : float
+                y_cord : float
+        """
         serializer = CoordinateSerializer(data=request.GET.dict())
         if serializer.is_valid():
             point = Point(*serializer.data.values())
@@ -44,6 +49,12 @@ class DestinationView(ModelViewSet):
     serializer_class = DestinationSerializer
 
     def list(self, request):
+        """
+        if no query parms are provided then every row is returned \n
+            query_parms:
+                x_cord : float
+                y_cord : float
+        """
         serializer = CoordinateSerializer(data=request.GET.dict())
         if serializer.is_valid():
             point = Point(*serializer.data.values())
