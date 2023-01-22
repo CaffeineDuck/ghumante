@@ -3,7 +3,7 @@ interface DestinationInterface {
   name: string;
   geometry: GeoLocationInterface;
   description: string;
-  photo: string | null;
+  photo: string;
   created_at: Date;
   category: number;
 }

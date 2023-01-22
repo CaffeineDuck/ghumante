@@ -16,10 +16,12 @@ import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
 import LocationPicker from "@/components/global/LocationPicker";
 import PlanTripModal from "@/components/global/PlanTripModal";
+import { FormProvider, useForm } from "react-hook-form";
 
 export default function HeroSection() {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const router = useRouter();
+  const method = useForm({ mode: "all" });
   return (
     <>
       <Head>
@@ -110,7 +112,9 @@ export default function HeroSection() {
           </Stack>
         </Container>
       </Box>
-      <PlanTripModal isOpen={isOpen} onClose={onClose} />
+      <FormProvider {...method}>
+        <PlanTripModal isOpen={isOpen} onClose={onClose} />
+      </FormProvider>
       {/* <LocationPicker
         address=""
         confirmAddress={() => {}}
