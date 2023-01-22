@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const parseIntoAddress = (address_components: []) => {
   var addressComponent: any = {
     home: ["street_number"],
@@ -65,3 +67,32 @@ export const getAddressFromGeocode = async (lat: any, lng: any) => {
     return [];
   }
 };
+
+
+type Coordinates = {
+  latitude: number,
+  longitude: number
+}
+
+type DistanceInfo = {
+  distance: string,
+  timeToTravel: string
+}
+
+export const getDistance = async (origin: Coordinates, destination: Coordinates) => {
+
+  const DISTANCE_URL = `https://maps.googleapis.com/maps/api/distancematrix/json`
+
+  const params = {
+    origins: `${origin.latitude},${origin.longitude}`,
+    destinations: `${destination.latitude},${destination.longitude}`,
+    key: 'AIzaSyALPPxliHzQS49RaaQv9UQ4IOomsa-4L-s'
+  }
+
+  const { data } = await axios.get(DISTANCE_URL, { params });
+
+  const distance: DistanceInfo = { distance: data.rows[0].elements[0].distance.text, timeToTravel: data.rows[0].elements[0].duration.text };
+
+  return distance;
+
+}
