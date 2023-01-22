@@ -1,5 +1,6 @@
 import ChooseActivities from "@/components/global/ChooseActivities";
 import ChooseDate from "@/components/global/ChooseDate";
+import ChooseHotel from "@/components/global/ChooseHotel";
 import ChooseMap from "@/components/global/PlanTripModal/ChooseMap";
 import React, { useContext, createContext, useState } from "react";
 
@@ -42,6 +43,15 @@ const initialSteps: Step[] = [
     showSidebar: true,
     showInSidebar: true,
   },
+  {
+    stepNumber: 3,
+    enabled: true,
+    component: ChooseHotel,
+    iconName: "la:plane-arrival",
+    label: "Choose Hotel",
+    showSidebar: true,
+    showInSidebar: true,
+  }
 ];
 
 export interface ITripContext {
