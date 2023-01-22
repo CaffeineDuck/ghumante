@@ -127,7 +127,7 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                           />
 
                           <Text
-                            whiteSpace="nowrap"
+                            whiteSpace="normal"
                             fontWeight="medium"
                             color={
                               currentStep.stepNumber === step.stepNumber
@@ -190,7 +190,7 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
         {totalHours && (
           <ModalFooter>
             <Text>
-              Hours: {parseInt(occupiedHours)}/{totalHours} hours
+              Hours: {Number(occupiedHours).toFixed(0)}/{totalHours} hours
             </Text>{" "}
           </ModalFooter>
         )}

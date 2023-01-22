@@ -17,7 +17,7 @@ const ChooseMap: React.FC = () => {
       </Text>
       <Map
         searchReadOnly={false}
-        searchBoxFromTop="5px"
+        searchBoxFromTop="10px"
         height="400px"
         width="100%"
         setCoOrdinates={setCoOrdinates}

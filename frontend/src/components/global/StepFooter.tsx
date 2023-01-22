@@ -5,10 +5,9 @@ import React from "react";
 
 const StepFooter: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
   const { currentStep, setCurrentStep, steps } = useTripContext();
-
   return (
-    <Flex justify="space-between" mt="4rem" gap={"5rem"}>
-{ /*      <Button
+    <Flex justify="flex-end" mt="4rem" gap={"5rem"}>
+      {/*      <Button
         variant={"solid"}
         colorScheme={"primaryScheme"}
         size={"lg"}
@@ -18,7 +17,7 @@ const StepFooter: React.FC<{ onContinue: () => void }> = ({ onContinue }) => {
         leftIcon={<Icon fontSize={18} icon="mdi:arrow-left" />}
       >
         Go Back.
-      </Button> */ }
+      </Button> */}
       <Button
         variant={"solid"}
         colorScheme={"primaryScheme"}

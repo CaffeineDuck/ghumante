@@ -6,7 +6,7 @@ import React, { useContext, createContext, useState } from "react";
 
 export interface Step {
   stepNumber: number;
-  component?: React.FC;
+  component?: React.FC | any;
   enabled: boolean;
   iconName: string;
   label: string;
@@ -51,7 +51,7 @@ const initialSteps: Step[] = [
     label: "Choose Hotel",
     showSidebar: true,
     showInSidebar: true,
-  }
+  },
 ];
 
 export interface ITripContext {
@@ -119,9 +119,8 @@ export const TripContextProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const addStep = (step: Step) => {
-      console.log(step.tripInfo, steps);
+    console.log(step.tripInfo, steps);
     if (step.tripInfo) {
-
       console.log(step.tripInfo, steps);
 
       const stepFound = steps.find((x) => x.tripInfo?.id == step.tripInfo?.id);

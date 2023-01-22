@@ -18,10 +18,17 @@ import { extendMoment } from "moment-range";
 import { Icon } from "@iconify/react";
 import StepFooter from "../StepFooter";
 import { useTripContext } from "@/context/TripContext";
+import CustomSelect from "../FormElements/CustomSelect";
+import { nationalities } from "@/sampleData/nationalities";
+
 const moment = extendMoment(originalMoment as any);
 const ChooseDate: React.FC = () => {
-  const { gotoNextPage, setArrivalDateTime, setDepartureDateTime, setTotalHours } =
-    useTripContext();
+  const {
+    gotoNextPage,
+    setArrivalDateTime,
+    setDepartureDateTime,
+    setTotalHours,
+  } = useTripContext();
   const today = moment();
   const [calendar, setCalender] = useState({
     dates: null,
@@ -84,11 +91,12 @@ const ChooseDate: React.FC = () => {
         Choose Nationality & Date ranges
       </Text>
       <Box my="2rem">
-        <InputField
+        <CustomSelect
           name="nationality"
           margin="0"
-          type="text"
+          options={nationalities.map((item) => ({ label: item, value: item }))}
           label="Nationality"
+          placeholder="Choose nationality"
           validateOptions={{ required: "Nationality is requried" }}
         />
         <FormControl m="1rem 0">
@@ -157,7 +165,7 @@ const ChooseDate: React.FC = () => {
           // use momentjs to subtract end date from start date
           //
           let hours = moment(endDateTime).diff(moment(startDateTime), "hours");
-          setTotalHours(hours)
+          setTotalHours(hours);
 
           setArrivalDateTime(startDateTime);
           setDepartureDateTime(endDateTime);
