@@ -37,8 +37,8 @@ const NearByPage = () => {
     let newMarkers: CoOrdinateInterface[] = [];
     if (activeIndex === 0) {
       newMarkers = hotels?.map((hotel) => ({
-        lat: hotel.geolocation?.coordinates[0],
-        long: hotel.geolocation?.coordinates[1],
+        lat: hotel.geometry?.coordinates[0],
+        long: hotel.geometry?.coordinates[1],
       })) as CoOrdinateInterface[];
     } else if (activeIndex === 1) {
       newMarkers = destinations?.map((destination) => ({
@@ -47,7 +47,8 @@ const NearByPage = () => {
       })) as CoOrdinateInterface[];
     }
     setMarkers(newMarkers);
-  }, [destinations, hotels, activeIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex]);
   console.log(markers);
   return (
     <Flex gap="2rem">
@@ -143,7 +144,7 @@ const NearByPage = () => {
           askCurrentLocation={true}
           setCoOrdinates={setCoOrdinates}
           disableClick={true}
-          // markers={markers}
+          markers={markers}
         />
       </Box>
     </Flex>

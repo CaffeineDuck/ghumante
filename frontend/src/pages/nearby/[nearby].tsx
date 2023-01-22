@@ -28,6 +28,7 @@ import { Icon } from "@iconify/react";
 import Head from "next/head";
 import React from "react";
 import useGetByCategoryAndID from "@/hooks/useGetByCategoryAndID";
+import { mapUrl } from "@/utils/mapUrl";
 
 const SingleNearByPage: React.FC<
   InferGetStaticPropsType<typeof getStaticProps>
@@ -56,14 +57,27 @@ const SingleNearByPage: React.FC<
               mt={4}
               height="min-content"
             >
-              <ImageCarousel images={Array(5).fill(item?.photo || "")} />
+              <ImageCarousel
+                images={Array(5).fill(item?.photo ? mapUrl(item?.photo) : "")}
+              />
             </Stack>
             <Stack pt={[4, 4, 0]}>
               <Flex align="center"></Flex>
               <Text as="h2" fontSize={["xl", "xl", "2xl"]} fontWeight="600">
                 {item?.name}
               </Text>
-
+              {item?.location_name && (
+                <Flex
+                  w="fit-content"
+                  fontSize="0.9rem"
+                  color="gray.600"
+                  align="center"
+                  gap="0.2rem"
+                >
+                  <Icon icon="ph:map-pin-fill" />
+                  <Text as="span">{item?.location_name}</Text>
+                </Flex>
+              )}
               <Flex justify="space-between">
                 <Flex align="center">
                   <Rating rating={3.5} />

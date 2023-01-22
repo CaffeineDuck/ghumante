@@ -6,7 +6,7 @@ const useGetHotels = (params: IParams) => {
   const fetchHotels = async () => {
     try {
       const response = await axiosInstance.get("/api/hotel", { params });
-      const mappedData = response.data?.features?.map(
+      const mappedData = response.data?.results?.features?.map(
         (item: CommonObjectResponse) => ({
           id: item.id,
           geometry: item.geometry,
