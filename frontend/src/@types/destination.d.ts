@@ -7,4 +7,5 @@ interface DestinationInterface {
   created_at: Date;
   category: number;
   location_name: string;
+  visiting_time: number;
 }

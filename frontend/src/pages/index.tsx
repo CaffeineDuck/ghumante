@@ -3,11 +3,11 @@ import HeroSection from "@/components/landing/HeroSection";
 import HowItWorks from "@/components/landing/HowItWorks";
 
 import { Box } from "@chakra-ui/react";
-import { StepContextProvider } from "@/context/StepContext";
+import { TripContextProvider } from "@/context/TripContext";
 
 export default function Home() {
   return (
-    <StepContextProvider>
+    <TripContextProvider>
     <>
       <Head>
         <title>Ghumante</title>
@@ -17,6 +17,6 @@ export default function Home() {
         <HowItWorks />
       </Box>
     </>
-    </StepContextProvider>
+    </TripContextProvider>
   );
 }

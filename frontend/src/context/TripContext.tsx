@@ -5,12 +5,13 @@ import React, { useContext, createContext, useState } from "react";
 
 export interface Step {
   stepNumber: number;
-  component: React.FC;
+  component?: React.FC;
   enabled: boolean;
   iconName: string;
   label: string;
   showSidebar: boolean;
   showInSidebar: boolean;
+  tripInfo?: DestinationInterface;
 }
 
 const initialSteps: Step[] = [
@@ -43,7 +44,7 @@ const initialSteps: Step[] = [
   },
 ];
 
-export interface IStepContext {
+export interface ITripContext {
   arrivalDateTime: string | null;
   departureDateTime: string | null;
   setArrivalDateTime: React.Dispatch<React.SetStateAction<string | null>>;
@@ -54,9 +55,13 @@ export interface IStepContext {
   gotoNextPage: () => void;
   addStep: (step: Step) => void;
   currentStep: Step;
+  totalHours: number;
+  setTotalHours: React.Dispatch<React.SetStateAction<number>>;
+  occupiedHours: number;
+  setOccupiedHours: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const defaultStepContext: IStepContext = {
+const defaultTripContext: ITripContext = {
   steps: initialSteps,
   arrivalDateTime: null,
   departureDateTime: null,
@@ -67,24 +72,32 @@ const defaultStepContext: IStepContext = {
   gotoNextPage: () => {},
   currentStep: initialSteps[0],
   addStep: (step: Step) => {},
+  totalHours: 0,
+  setTotalHours: () => {},
+
+  occupiedHours: 0,
+  setOccupiedHours: () => {},
 };
 
-const StepContext = createContext<IStepContext>({
-  ...defaultStepContext,
+const TripContext = createContext<ITripContext>({
+  ...defaultTripContext,
 });
 
-export const StepContextProvider: React.FC<{ children: React.ReactNode }> = ({
+export const TripContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [currentStep, setCurrentStep] = useState<Step>(
-    defaultStepContext.currentStep
+    defaultTripContext.currentStep
   );
-  const [steps, setSteps] = useState<Step[]>(defaultStepContext.steps);
+  const [steps, setSteps] = useState<Step[]>(defaultTripContext.steps);
 
   const [arrivalDateTime, setArrivalDateTime] = useState<string | null>(null);
   const [departureDateTime, setDepartureDateTime] = useState<string | null>(
     null
   );
+
+  const [totalHours, setTotalHours] = useState<number>(0);
+  const [occupiedHours, setOccupiedHours] = useState<number>(0);
 
   const gotoNextPage = () => {
     const nextStep = steps.find(
@@ -96,14 +109,26 @@ export const StepContextProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const addStep = (step: Step) => {
+      console.log(step.tripInfo, steps);
+    if (step.tripInfo) {
+
+      console.log(step.tripInfo, steps);
+
+      const stepFound = steps.find((x) => x.tripInfo?.id == step.tripInfo?.id);
+
+      if (stepFound) {
+        return;
+      }
+    }
+
     const newSteps = [...steps];
-    step.stepNumber = newSteps.length - 1;
-    newSteps.splice(newSteps.length - 1, 0, step);
+    step.stepNumber = newSteps.length;
+    newSteps.splice(newSteps.length, 0, step);
     setSteps(newSteps);
   };
 
   return (
-    <StepContext.Provider
+    <TripContext.Provider
       value={{
         steps,
         arrivalDateTime,
@@ -115,13 +140,18 @@ export const StepContextProvider: React.FC<{ children: React.ReactNode }> = ({
         setCurrentStep,
         addStep,
         gotoNextPage,
+        totalHours,
+        setTotalHours,
+
+        occupiedHours,
+        setOccupiedHours,
       }}
     >
       {children}
-    </StepContext.Provider>
+    </TripContext.Provider>
   );
 };
 
-export const useStepContext = () => {
-  return useContext(StepContext);
+export const useTripContext = () => {
+  return useContext(TripContext);
 };

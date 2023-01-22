@@ -1,5 +1,5 @@
 import AppContext from "@/context/AppContext";
-import { useStepContext } from "@/context/StepContext";
+import { useTripContext } from "@/context/TripContext";
 import { Box, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import StepFooter from "../StepFooter";
@@ -8,7 +8,7 @@ import Map from "../Map";
 const ChooseMap: React.FC = () => {
   const { setCoOrdinates, setAddress } = useContext(AppContext);
 
-  const { gotoNextPage } = useStepContext();
+  const { gotoNextPage } = useTripContext();
 
   return (
     <Box>

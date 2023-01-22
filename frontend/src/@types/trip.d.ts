@@ -6,4 +6,5 @@ interface TripInterface {
   end_date: Date;
   created_at: Date;
   hotel: number;
+  visiting_time: number;
 }

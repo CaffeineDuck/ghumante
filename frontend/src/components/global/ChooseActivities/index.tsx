@@ -2,9 +2,10 @@ import DestinationCard from "@/components/nearby/DestinationCard";
 import AppContext from "@/context/AppContext";
 import useGetDestinationCategories from "@/hooks/useGetDestinationCategories";
 import { axiosInstance } from "@/utils/axiosInstance";
-import { Box, Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import React, { useContext, useEffect, useState } from "react";
+import StepFooter from "../StepFooter";
 
 const ChooseActivities: React.FC = () => {
   const { destinationCategories } = useGetDestinationCategories();
@@ -17,8 +18,9 @@ const ChooseActivities: React.FC = () => {
     try {
       const response = await axiosInstance.get("/api/destination", {
         params: {
-          x: coOrdinates.lat,
-          y: coOrdinates.long,
+          //TODO: Uncomment
+          // x: coOrdinates.lat,
+          // y: coOrdinates.long,
           range: 50,
           category: choosedCategory?.id,
         },
@@ -128,6 +130,9 @@ const ChooseActivities: React.FC = () => {
           </Box>
         )}
       </Flex>
+      <StepFooter onContinue={() => {
+      alert("HI")
+      }} />
     </Box>
   );
 };

@@ -7,8 +7,16 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Progress,
+  Slider,
+  SliderFilledTrack,
+  SliderMark,
+  SliderThumb,
+  SliderTrack,
+  Stack,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -22,7 +30,7 @@ import {
 import AppContext from "@/context/AppContext";
 import useCustomToast from "@/hooks/useCustomToast";
 //import useCurrentStep from "@/hooks/useCurrentStep";
-import { useStepContext } from "@/context/StepContext";
+import { useTripContext } from "@/context/TripContext";
 import { ColorChangingCircle } from "./ColorChangingCircle";
 interface PlanTripModalProps {
   isOpen: boolean;
@@ -34,16 +42,17 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
 
   const {
     steps,
+    occupiedHours,
+    totalHours,
+    setTotalHours,
     currentStep,
     setCurrentStep,
     arrivalDateTime,
     departureDateTime,
-  } = useStepContext();
+  } = useTripContext();
 
   return (
-<<<<<<< HEAD
-
-    <Modal size="6xl" isOpen={isOpen} onClose={onClose}>
+    <Modal size="5xl" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader></ModalHeader>
@@ -109,7 +118,7 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                         />
 
                         <Text
-                          whiteSpace="nowrap"
+                          whiteSpace="wrap"
                           fontWeight="medium"
                           color={
                             currentStep.stepNumber === step.stepNumber
@@ -150,6 +159,13 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
             </Box>
           </Flex>
         </ModalBody>
+        {totalHours && (
+          <ModalFooter>
+            <Text>
+              Hours: {parseInt(occupiedHours)}/{totalHours} hours
+            </Text>{" "}
+          </ModalFooter>
+        )}
       </ModalContent>
     </Modal>
   );

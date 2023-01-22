@@ -17,11 +17,11 @@ import originalMoment from "moment";
 import { extendMoment } from "moment-range";
 import { Icon } from "@iconify/react";
 import StepFooter from "../StepFooter";
-import { useStepContext } from "@/context/StepContext";
+import { useTripContext } from "@/context/TripContext";
 const moment = extendMoment(originalMoment as any);
 const ChooseDate: React.FC = () => {
-  const { gotoNextPage, setArrivalDateTime, setDepartureDateTime } =
-    useStepContext();
+  const { gotoNextPage, setArrivalDateTime, setDepartureDateTime, setTotalHours } =
+    useTripContext();
   const today = moment();
   const [calendar, setCalender] = useState({
     dates: null,
@@ -153,6 +153,11 @@ const ChooseDate: React.FC = () => {
         onContinue={() => {
           let startDateTime = calendar.start;
           let endDateTime = calendar.end;
+
+          // use momentjs to subtract end date from start date
+          //
+          let hours = moment(endDateTime).diff(moment(startDateTime), "hours");
+          setTotalHours(hours)
 
           setArrivalDateTime(startDateTime);
           setDepartureDateTime(endDateTime);

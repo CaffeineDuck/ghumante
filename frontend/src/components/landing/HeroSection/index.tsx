@@ -17,12 +17,12 @@ import { Icon } from "@iconify/react";
 import PlanTripModal from "@/components/global/PlanTripModal";
 import { FormProvider, useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { useStepContext } from "@/context/StepContext";
+import { useTripContext } from "@/context/TripContext";
 
 export default function HeroSection() {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { setCurrentStep, steps, setArrivalDateTime, setDepartureDateTime } =
-    useStepContext();
+    useTripContext();
 
   useEffect(() => {
     if (!isOpen) {

@@ -7,6 +7,7 @@ const breakpoints = {
   xl: "1440px",
   "2xl": "1900px",
 };
+
 const CustomSteps = {
   ...StepsTheme,
   baseStyle: (props: any) => {

@@ -1,3 +1,4 @@
+import { Step, useTripContext } from "@/context/TripContext";
 import { mapUrl } from "@/utils/mapUrl";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
@@ -13,6 +14,7 @@ const DestinationCard: React.FC<{
     <CardWrapper
       as={as || "link"}
       href={`/nearby/destination-${destination.id}`}
+      destination={destination}
     >
       <Box pos="relative" h="10rem">
         <Image
@@ -68,11 +70,33 @@ export const CardWrapper = ({
   as,
   href,
   children,
+  destination,
 }: {
   as?: "link" | "div";
   href: string;
   children: React.ReactNode;
+  destination: DestinationInterface;
 }) => {
+  const { addStep, occupiedHours, setOccupiedHours } = useTripContext();
+
+  const onClick = () => {
+    const step: Step = {
+      stepNumber: -1,
+
+      enabled: true,
+      iconName: "material-symbols:temple-buddhist",
+      label: destination.name,
+      showSidebar: true,
+      showInSidebar: true,
+      tripInfo: destination
+    };
+
+    const visitingTimeInHrs = destination.visiting_time / 60;
+
+    setOccupiedHours(occupiedHours + visitingTimeInHrs);
+
+    addStep(step);
+  };
   return as === "link" ? (
     <Box
       as={Link}
@@ -88,6 +112,7 @@ export const CardWrapper = ({
     </Box>
   ) : (
     <Box
+      onClick={onClick}
       cursor="pointer"
       role="group"
       borderRadius="lg"
