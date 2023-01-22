@@ -69,12 +69,12 @@ export default function HeroSection() {
                   minW="10rem"
                   color="light"
                   fontSize="md"
-                  onClick={() => router.push("/")}
+                  onClick={() => router.push("/nearby")}
                   _hover={{
                     bg: "primaryHover",
                   }}
                 >
-                  Explroe near me
+                  Explore near me
                 </Button>
                 <Button
                   variant={"solid"}

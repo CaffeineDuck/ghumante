@@ -28,7 +28,6 @@ const LoginPage = () => {
   const otp = watch("otp");
 
   const submitOTP = async (code: string) => {
-    console.log(code);
     try {
       const { success, token, error } = await otpVerification(
         code,
