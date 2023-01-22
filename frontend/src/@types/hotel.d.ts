@@ -1,7 +1,7 @@
 interface HotelInterface {
   id: number;
   name: string;
-  geolocation: GeoLocationInterface;
+  geometry: GeoLocationInterface;
   location_name: string;
   description: string;
   room_available: boolean;

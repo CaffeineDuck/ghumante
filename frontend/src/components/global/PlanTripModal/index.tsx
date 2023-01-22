@@ -40,28 +40,8 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
     departureDateTime,
   } = useStepContext();
 
-  const { handleSubmit, trigger } = useFormContext();
-  const { address } = useContext(AppContext);
-  const onSubmit = async (values: FieldValues) => {};
-  // const { currentStep, setCurrentStep, setSteps, steps } = useCurrentStep();
-  const handleContinue = async () => {
-    // if (currentStep.stepNumber === 0) {
-    //   if (!address) return toast.info("Please choose your location");
-    // } else if (currentStep.stepNumber === 1) {
-    //   const isValid = await trigger(["nationality"]);
-    //   if (!isValid) return;
-    // }
-    // setCurrentStep(steps[currentStep.stepNumber + 1]);
-  };
-
-  useEffect(() => {
-
-  return () => {
-  console.log("Unmounted.")
-  }
-
-  }, [])
   return (
+<<<<<<< HEAD
 
     <Modal size="6xl" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -76,8 +56,9 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
           minHeight={"768px"}
           px={{ base: "10px", md: "16px", lg: "24px" }}
           py="2rem"
+          minH="30rem"
         >
-          <Flex gap={{ base: "1.5rem" }} height="full" align="center" justify="center">
+          <Flex gap={{ base: "1.5rem" }} justify="center">
             {currentStep.showSidebar && (
               <VStack
                 px="4"

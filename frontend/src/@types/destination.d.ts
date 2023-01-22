@@ -6,4 +6,5 @@ interface DestinationInterface {
   photo: string;
   created_at: Date;
   category: number;
+  location_name: string;
 }

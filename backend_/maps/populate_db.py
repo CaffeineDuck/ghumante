@@ -9,10 +9,11 @@ class SeedDB:
 
         self.destionation_categories = {
             "temple": 1,
-            "park": 2,
-            "swimming pool": 3,
-            "religous place": 4,
-            "curch": 5,
+            "park": 3,
+            "swimming pool": 4,
+            "religous place": 5,
+            "curch": 6,
+            " Trekking and Hiking": 7,
         }
 
     def seed_hotels(self):
@@ -22,11 +23,9 @@ class SeedDB:
         self.client.find_and_save_images("hotels near jahapa")
 
     def seed_destionaitons(self):
-        for i in self.destionation_categories:
-            self.clinet.find_and_save_images(f"{i} near kathmandu")
-            self.clinet.find_and_save_images(f"{i} near pokhara")
-            self.clinet.find_and_save_images(f"{i} near dang")
-            self.clinet.find_and_save_images(f"{i} near jahapa")
+        for i, value in self.destionation_categories.items():
+            self.clinet.find_and_save_images(f"{i} near kathmandu", value)
+            self.clinet.find_and_save_images(f"{i} near pokhara", value)
 
 
 seeder = SeedDB()

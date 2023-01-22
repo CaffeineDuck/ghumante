@@ -6,7 +6,7 @@ const useGetTrips = () => {
   const fetchTrips = async () => {
     try {
       const response = await axiosInstance.get("/api/localtrip");
-      const mappedData = response.data?.features?.map(
+      const mappedData = response.data?.results?.features?.map(
         (item: CommonObjectResponse) => ({
           id: item.id,
           geometry: item.geometry,

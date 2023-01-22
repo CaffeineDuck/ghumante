@@ -260,11 +260,6 @@ const Map: React.FC<MapProps> = ({
           <Marker
             position={{ lat: marker?.lat, lng: marker.long }}
             key={index}
-            icon={{
-              url: "https://cdn.mindbowser.com/custom_marker_pin.svg",
-              anchor: new google.maps.Point(17, 46),
-              scaledSize: new google.maps.Size(37, 37),
-            }}
           />
         ))}
       <Box

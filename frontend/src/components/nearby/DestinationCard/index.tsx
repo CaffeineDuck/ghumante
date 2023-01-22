@@ -5,19 +5,14 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const DestinationCard: React.FC<{ destination: DestinationInterface }> = ({
-  destination,
-}) => {
+const DestinationCard: React.FC<{
+  destination: DestinationInterface;
+  as?: "link" | "div";
+}> = ({ destination, as }) => {
   return (
-    <Box
-      as={Link}
+    <CardWrapper
+      as={as || "link"}
       href={`/nearby/destination-${destination.id}`}
-      cursor="pointer"
-      role="group"
-      borderRadius="lg"
-      bg="light"
-      overflow="hidden"
-      _hover={{ shadow: "md" }}
     >
       <Box pos="relative" h="10rem">
         <Image
@@ -63,8 +58,44 @@ const DestinationCard: React.FC<{ destination: DestinationInterface }> = ({
           </Flex>
         </Stack>
       </Box>
-    </Box>
+    </CardWrapper>
   );
 };
 
 export default DestinationCard;
+
+export const CardWrapper = ({
+  as,
+  href,
+  children,
+}: {
+  as?: "link" | "div";
+  href: string;
+  children: React.ReactNode;
+}) => {
+  return as === "link" ? (
+    <Box
+      as={Link}
+      href={href}
+      cursor="pointer"
+      role="group"
+      borderRadius="lg"
+      bg="light"
+      overflow="hidden"
+      _hover={{ shadow: "md" }}
+    >
+      {children}
+    </Box>
+  ) : (
+    <Box
+      cursor="pointer"
+      role="group"
+      borderRadius="lg"
+      bg="light"
+      overflow="hidden"
+      _hover={{ shadow: "md" }}
+    >
+      {children}
+    </Box>
+  );
+};

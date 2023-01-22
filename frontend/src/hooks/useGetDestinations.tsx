@@ -7,7 +7,7 @@ const useGetDestinations = (params: IParams) => {
     // if (params.x === 0 || params.y === 0) return;
     try {
       const response = await axiosInstance.get(`/api/destination`, { params });
-      const mappedData = response.data?.features?.map(
+      const mappedData = response.data?.results?.features?.map(
         (item: CommonObjectResponse) => ({
           id: item.id,
           geometry: item.geometry,
