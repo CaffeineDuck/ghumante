@@ -29,6 +29,7 @@ class Hotel(models.Model):
     room_available = models.BooleanField(default=True)  # type: ignore
     photo = models.ImageField(upload_to="hotel_photos", null=True, blank=True)
     price_per_night = models.FloatField(null=True, blank=True)
+    visiting_time = models.IntegerField(null=True, blank=True, default=8)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -52,6 +53,7 @@ class Destination(models.Model):
     )
     photo = models.ImageField(upload_to="destination_photos", null=True, blank=True)
     address = models.CharField(max_length=1000, null=True, blank=True)
+    visiting_time = models.FloatField(null=True, blank=True)  # in minutes
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

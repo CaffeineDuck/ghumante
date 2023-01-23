@@ -1,4 +1,7 @@
+from typing import Any
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.views import APIView
+from core.models import User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.schemas.openapi import AutoSchema
 from rest_framework.viewsets import ModelViewSet
@@ -10,6 +13,7 @@ from .serializers import (
     LocalTripSerializer,
     CoordinateSerializer,
     DestinationCategorySerializer,
+    UserSerializer,
 )
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -17,50 +21,73 @@ from django.contrib.gis.measure import D
 from .paginations import CustomPagination
 
 
-class LocalTripView(ModelViewSet):
+# class LocalTripView(ModelViewSet):
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (IsAuthenticated,)
+#
+#     schema = AutoSchema(tags=["localtrip"])
+#     queryset = LocalTrip.objects.all()
+#     serializer_class = LocalTripSerializer
+#
+#     def create(self, request):
+#         serializer = LocalTripSerializer(
+#             data=request.data, context={"request": request}
+#         )
+#         if serializer.is_valid():
+#             serializer.save(user=request.user)
+#             return Response(serializer.data, 200)
+#         return Response(serializer.errors, status=400)
+#
+#     def retrieve(self, request, pk):
+#         try:
+#             query_set = LocalTrip.objects.get(user=request.user, pk=pk)
+#             serializer = LocalTripSerializer(query_set)
+#             return Response(serializer.data, 200)
+#         except LocalTrip.DoesNotExist:
+#             return Response({"error": "LocalTrip not found"}, status=404)
+#
+#     def list(self, request):
+#         query_set = LocalTrip.objects.filter(user=request.user)
+#         serializer = LocalTripSerializer(query_set, many=True)
+#         return Response(serializer.data, 200)
+#
+#     def partial_update(self, request, pk):
+#         query_set = self.get_object()
+#         serializer = LocalTripSerializer(
+#             query_set, data=request.data, context={"request": request}, partial=True
+#         )
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, 200)
+#         return Response(serializer.errors, status=400)
+#
+#     def destroy(self, request, pk):
+#         query_set = self.get_object()
+#         query_set.delete()
+#         return Response({"message": "LocalTrip deleted successfully"}, 200)
+
+localtrips: list[dict[str, Any]] = list()
+
+
+class LocalTripView(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     schema = AutoSchema(tags=["localtrip"])
-    queryset = LocalTrip.objects.all()
-    serializer_class = LocalTripSerializer
 
-    def create(self, request):
-        serializer = LocalTripSerializer(
-            data=request.data, context={"request": request}
-        )
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-            return Response(serializer.data, 200)
-        return Response(serializer.errors, status=400)
+    def get(self, request):
+        return Response(localtrips, 200)
 
-    def retrieve(self, request, pk):
-        try:
-            query_set = LocalTrip.objects.get(user=request.user, pk=pk)
-            serializer = LocalTripSerializer(query_set)
-            return Response(serializer.data, 200)
-        except LocalTrip.DoesNotExist:
-            return Response({"error": "LocalTrip not found"}, status=404)
+    def post(self, request):
+        data = {**request.data.dict(), "user": request.user}
+        localtrips.append(data)
+        return Response(status=201)
 
-    def list(self, request):
-        query_set = LocalTrip.objects.filter(user=request.user)
-        serializer = LocalTripSerializer(query_set, many=True)
-        return Response(serializer.data, 200)
-
-    def partial_update(self, request, pk):
-        query_set = self.get_object()
-        serializer = LocalTripSerializer(
-            query_set, data=request.data, context={"request": request}, partial=True
-        )
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, 200)
-        return Response(serializer.errors, status=400)
-
-    def destory(self, request, pk):
-        query_set = self.get_object()
-        query_set.delete()
-        return Response({"message": "LocalTrip deleted successfully"}, 200)
+    def get_object(self, pk):
+        for localtrip in localtrips:
+            if localtrip["id"] == pk:
+                return localtrip
+        raise LocalTrip.DoesNotExist
 
 
 # class HotelView(ModelViewSet):
@@ -220,3 +247,10 @@ class DestionationCategoryViewSet(ModelViewSet):
     serializer_class = DestinationCategorySerializer
 
     schema = AutoSchema(tags=["destination-category"])
+
+
+class UserViewSet(ModelViewSet):
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
+
+    serializer_class = UserSerializer

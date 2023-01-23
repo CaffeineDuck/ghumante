@@ -1,10 +1,13 @@
 from rest_framework.authtoken.serializers import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
+from core.models import User
 
 from .models import Destination, Hotel, LocalTrip, DestinationCategory
 
 
 class HotelSerializer(GeoFeatureModelSerializer):
+    photo = serializers.ImageField(max_length=None, use_url=False)
+
     class Meta:
         model = Hotel
         geo_field = "geolocation"
@@ -42,3 +45,9 @@ class DestinationSerializer(GeoFeatureModelSerializer):
         model = Destination
         geo_field = "geolocation"
         fields = "__all__"
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ("password",)
