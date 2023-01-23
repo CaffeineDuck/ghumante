@@ -2,6 +2,8 @@ import ChooseActivities from "@/components/global/ChooseActivities";
 import ChooseDate from "@/components/global/ChooseDate";
 import ChooseHotel from "@/components/global/ChooseHotel";
 import ChooseMap from "@/components/global/PlanTripModal/ChooseMap";
+import SumamryDetails from "@/components/global/SummaryDetails";
+import useCustomToast from "@/hooks/useCustomToast";
 import React, { useContext, createContext, useState } from "react";
 
 export interface Step {
@@ -12,7 +14,7 @@ export interface Step {
   label: string;
   showSidebar: boolean;
   showInSidebar: boolean;
-  tripInfo?: DestinationInterface;
+  tripInfo?: DestinationInterface | HotelInterface;
 }
 
 const initialSteps: Step[] = [
@@ -47,8 +49,17 @@ const initialSteps: Step[] = [
     stepNumber: 3,
     enabled: true,
     component: ChooseHotel,
-    iconName: "la:plane-arrival",
+    iconName: "ri:hotel-line",
     label: "Choose Hotel",
+    showSidebar: true,
+    showInSidebar: true,
+  },
+  {
+    stepNumber: 4,
+    enabled: false,
+    component: SumamryDetails,
+    iconName: "carbon:order-details",
+    label: "Summary",
     showSidebar: true,
     showInSidebar: true,
   },
@@ -96,6 +107,7 @@ const TripContext = createContext<ITripContext>({
 export const TripContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const toast = useCustomToast();
   const [currentStep, setCurrentStep] = useState<Step>(
     defaultTripContext.currentStep
   );
@@ -119,21 +131,20 @@ export const TripContextProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const addStep = (step: Step) => {
-    console.log(step.tripInfo, steps);
     if (step.tripInfo) {
-      console.log(step.tripInfo, steps);
-
       const stepFound = steps.find((x) => x.tripInfo?.id == step.tripInfo?.id);
-
       if (stepFound) {
         return;
       }
     }
 
+    const offset = currentStep.stepNumber === 3 ? 1 : 2;
+
     const newSteps = [...steps];
     step.stepNumber = newSteps.length;
-    newSteps.splice(newSteps.length, 0, step);
+    newSteps.splice(newSteps.length - offset, 0, step);
     setSteps(newSteps);
+    toast.success(`${step.tripInfo?.name} is selected`);
   };
 
   return (

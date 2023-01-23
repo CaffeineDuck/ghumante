@@ -7,4 +7,5 @@ interface HotelInterface {
   room_available: boolean;
   photo: string;
   created_at: Date;
+  price_per_night: number;
 }

@@ -1,8 +1,18 @@
 import DestinationCard from "@/components/nearby/DestinationCard";
 import AppContext from "@/context/AppContext";
+import { useTripContext } from "@/context/TripContext";
 import useGetDestinationCategories from "@/hooks/useGetDestinationCategories";
 import { axiosInstance } from "@/utils/axiosInstance";
-import { Box, Flex, SimpleGrid, Slider, SliderFilledTrack, SliderThumb, SliderTrack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  SimpleGrid,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+  Text,
+} from "@chakra-ui/react";
 import { Icon } from "@iconify/react";
 import React, { useContext, useEffect, useState } from "react";
 import StepFooter from "../StepFooter";
@@ -10,10 +20,15 @@ import StepFooter from "../StepFooter";
 const ChooseActivities: React.FC = () => {
   const { destinationCategories } = useGetDestinationCategories();
   const { coOrdinates } = useContext(AppContext);
+  const { setCurrentStep, steps } = useTripContext();
   const [destinations, setDestinations] = useState<DestinationInterface[]>([]);
   const [choosedCategory, setChoosedCategory] =
     useState<DestinationCategoryInterface | null>(null);
-
+  const handleContinue = () => {
+    const hotelStep = steps.find((step) => step.stepNumber === 3);
+    if (!hotelStep) return;
+    setCurrentStep(hotelStep);
+  };
   const fetchDestinations = async () => {
     try {
       const response = await axiosInstance.get("/api/destination", {
@@ -43,17 +58,18 @@ const ChooseActivities: React.FC = () => {
   }, [choosedCategory]);
   return (
     <Box>
-      <Text as="h4" fontSize="1.3rem">
+      <Text as="h4" fontSize="1.3rem" display="flex" alignItems="center">
         Choose Activities{" "}
         {choosedCategory?.id && (
           <Flex
             w="fit-content"
-            fontSize="0.9rem"
+            ml="0.3rem"
+            fontSize="1.3rem"
             color="gray.600"
             align="center"
             gap="0.2rem"
           >
-            <Icon icon="tabler:chevron-right" />
+            <Icon icon="tabler:chevron-right" fontSize="1.5rem" />
             <Text as="span">{choosedCategory.name}</Text>
           </Flex>
         )}
@@ -130,9 +146,7 @@ const ChooseActivities: React.FC = () => {
           </Box>
         )}
       </Flex>
-      <StepFooter onContinue={() => {
-      alert("HI")
-      }} />
+      <StepFooter onContinue={handleContinue} />
     </Box>
   );
 };

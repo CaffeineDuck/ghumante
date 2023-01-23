@@ -52,8 +52,8 @@ const Map: React.FC<MapProps> = ({
   const [libraries] = useState<any>(["places"]);
   const toast = useToast();
   const [center, setCenter] = useState<any>({
-    lat: 0,
-    lng: 0,
+    lat: 27.707653,
+    lng: 85.312998,
   });
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,

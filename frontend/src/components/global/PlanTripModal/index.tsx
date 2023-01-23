@@ -33,6 +33,7 @@ import useCustomToast from "@/hooks/useCustomToast";
 import { useTripContext } from "@/context/TripContext";
 import { ColorChangingCircle } from "./ColorChangingCircle";
 import PhoneVerification from "../PhoneVerification";
+import { Icon } from "@iconify/react";
 interface PlanTripModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -60,7 +61,22 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader></ModalHeader>
+        <ModalHeader>
+          {currentStep.stepNumber !== 0 && (
+            <Button
+              variant={"ghost"}
+              colorScheme={"primaryScheme"}
+              size={"lg"}
+              px="0"
+              onClick={() => {
+                setCurrentStep(steps[currentStep.stepNumber - 1]);
+              }}
+              leftIcon={<Icon fontSize={18} icon="mdi:arrow-left" />}
+            >
+              Go back
+            </Button>
+          )}
+        </ModalHeader>
         <ModalCloseButton
           onClick={onClose}
           _hover={{ color: "var(--chakra-colors-primary)" }}
@@ -69,7 +85,8 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
           transition="200ms linear"
           minHeight={"768px"}
           px={{ base: "10px", md: "16px", lg: "24px" }}
-          py="2rem"
+          pt="1rem"
+          pb="2rem"
           minH="30rem"
         >
           {isAuthenticated ? (
@@ -116,8 +133,8 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
                         <Flex
                           key={step.label}
                           align="center"
-                          onClick={() => setCurrentStep(step)}
-                          cursor="pointer"
+                          onClick={() => step.enabled && setCurrentStep(step)}
+                          cursor={step.enabled ? "pointer" : "default"}
                           gap={{ base: "1.5rem", md: "1.82rem" }}
                         >
                           <ColorChangingCircle
@@ -187,7 +204,7 @@ const PlanTripModal: React.FC<PlanTripModalProps> = ({ isOpen, onClose }) => {
             </Box>
           )}
         </ModalBody>
-        {totalHours && (
+        {currentStep.stepNumber === 2 && totalHours !== 0 && (
           <ModalFooter>
             <Text>
               Hours: {Number(occupiedHours).toFixed(0)}/{totalHours} hours

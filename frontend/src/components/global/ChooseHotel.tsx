@@ -1,5 +1,6 @@
 import DestinationCard from "@/components/nearby/DestinationCard";
 import AppContext from "@/context/AppContext";
+import { useTripContext } from "@/context/TripContext";
 import useGetDestinationCategories from "@/hooks/useGetDestinationCategories";
 import { axiosInstance } from "@/utils/axiosInstance";
 import {
@@ -19,6 +20,7 @@ import StepFooter from "./StepFooter";
 const ChooseHotel: React.FC = () => {
   const { destinationCategories } = useGetDestinationCategories();
   const { coOrdinates } = useContext(AppContext);
+  const { steps, setCurrentStep } = useTripContext();
   const [destinations, setDestinations] = useState<DestinationInterface[]>([]);
   const [choosedCategory, setChoosedCategory] =
     useState<DestinationCategoryInterface | null>(null);
@@ -43,7 +45,11 @@ const ChooseHotel: React.FC = () => {
       setDestinations(mappedData);
     } catch (e) {}
   };
-
+  const handleContinue = () => {
+    let summaryStep = steps.find((step) => step.stepNumber === 4);
+    if (!summaryStep) return;
+    setCurrentStep(summaryStep);
+  };
   useEffect(() => {
     fetchHotels();
   }, []);
@@ -62,11 +68,7 @@ const ChooseHotel: React.FC = () => {
           </SimpleGrid>
         </Box>
       </Flex>
-      <StepFooter
-        onContinue={() => {
-          alert("HI");
-        }}
-      />
+      <StepFooter onContinue={handleContinue} />
     </Box>
   );
 };

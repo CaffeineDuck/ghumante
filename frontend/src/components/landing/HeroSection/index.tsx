@@ -66,7 +66,7 @@ export default function HeroSection() {
               visit, so you get to explore authentically like a local with us.
             </Text>
             <Flex align="center" gap="10" justify="center">
-              <Text as="span" fontSize="xl" fontWeight="medium">
+              <Text as="span" fontSize="2xl" fontWeight="bold" color="gray.700">
                 I want to
               </Text>
               <Stack
@@ -81,9 +81,16 @@ export default function HeroSection() {
                   bg={"primary"}
                   px={6}
                   minW="10rem"
+                  size="lg"
                   color="light"
-                  fontSize="md"
+                  fontSize="lg"
                   onClick={() => router.push("/nearby")}
+                  rightIcon={
+                    <Icon
+                      fontSize={18}
+                      icon="material-symbols:location-searching"
+                    />
+                  }
                   _hover={{
                     bg: "primaryHover",
                   }}
@@ -93,13 +100,16 @@ export default function HeroSection() {
                 <Button
                   variant={"solid"}
                   colorScheme={"primaryScheme"}
-                  size={"md"}
+                  size={"lg"}
                   onClick={onOpen}
+                  _hover={{
+                    bg: "primaryHover",
+                  }}
                   rightIcon={<Icon fontSize={18} icon="material-symbols:map" />}
                 >
                   Plan a trip
                 </Button>
-                <Box>
+                {/* <Box>
                   <IconReact
                     as={Arrow}
                     color={"gray.800"}
@@ -118,7 +128,7 @@ export default function HeroSection() {
                   >
                     Click here to plan a trip
                   </Text>
-                </Box>
+                </Box> */}
               </Stack>
             </Flex>
           </Stack>

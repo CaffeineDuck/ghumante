@@ -12,7 +12,7 @@ const LoginPage = () => {
           Ghumante
         </Text>
       </Text>
-      <PhoneVerification />
+      <PhoneVerification redirectUrl="/" />
     </Box>
   );
 };

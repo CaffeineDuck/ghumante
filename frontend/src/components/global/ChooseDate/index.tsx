@@ -165,7 +165,7 @@ const ChooseDate: React.FC = () => {
           // use momentjs to subtract end date from start date
           //
           let hours = moment(endDateTime).diff(moment(startDateTime), "hours");
-          setTotalHours(hours);
+          setTotalHours(hours / 2); // 12 hours availble for visit per day
 
           setArrivalDateTime(startDateTime);
           setDepartureDateTime(endDateTime);
