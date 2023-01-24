@@ -86,7 +86,7 @@ export const getDistance = async (origin: Coordinates, destination: Coordinates)
   const params = {
     origins: `${origin.latitude},${origin.longitude}`,
     destinations: `${destination.latitude},${destination.longitude}`,
-    key: 'AIzaSyALPPxliHzQS49RaaQv9UQ4IOomsa-4L-s'
+    key: process.env.NEXT_PUBLIC_GOOGLE_MAP_API
   }
 
   const { data } = await axios.get(DISTANCE_URL, { params });
